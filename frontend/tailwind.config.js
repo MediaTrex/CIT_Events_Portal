@@ -1,4 +1,3 @@
-// tailwind.config.js
 export default {
   content: [
     "./index.html",
@@ -7,8 +6,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#4f46e5",
-        secondary: "#22c55e",
+        primary: "rgb(var(--color-primary) / <alpha-value>)",
+        secondary: "rgb(var(--color-secondary) / <alpha-value>)",
+        rocket: "rgb(var(--color-rocket-blue) / <alpha-value>)",
+      },
+       fontFamily: {
+        sans: ['Outfit', 'sans-serif'],
       },
     },
   },
