@@ -10,8 +10,9 @@ import HomePage from "./pages/HomePage";
 function App() {
   return (
     <Routes>
+      {/* Layout Route */}
       <Route path="/" element={<HomePage />}>
-        {/* Home Page Cards */}
+        {/* Home Page (Cards) */}
         <Route
           index
           element={
@@ -23,11 +24,14 @@ function App() {
           }
         />
 
+        {/* Card Details */}
         <Route path="card/:id" element={<CardDetails />} />
 
+        {/* Login */}
         <Route path="login" element={<Login />} />
       </Route>
     </Routes>
   );
 }
+
 export default App;

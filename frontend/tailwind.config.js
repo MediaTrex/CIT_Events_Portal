@@ -10,7 +10,7 @@ export default {
         secondary: "rgb(var(--color-secondary) / <alpha-value>)",
         rocket: "rgb(var(--color-rocket-blue) / <alpha-value>)",
       },
-       fontFamily: {
+      fontFamily: {
         sans: ['Outfit', 'sans-serif'],
       },
     },

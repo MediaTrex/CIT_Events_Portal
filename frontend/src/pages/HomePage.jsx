@@ -1,22 +1,26 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-
-import Navbar from '../components/Navbar'
-import Search from '../Search'
-import Footer from '../Footer'
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+import Search from "../components/Search";
+import { Outlet } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div>
-
+    <div className="min-h-screen flex flex-col">
+      {/* Navbar */}
       <Navbar />
+
+      {/* Search Bar */}
       <Search />
 
-      <Outlet />
+      {/* Main Content Area */}
+      <main className="flex-grow">
+        <Outlet />
+      </main>
+
+      {/* Footer */}
       <Footer />
-
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

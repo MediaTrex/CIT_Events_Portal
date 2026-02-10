@@ -10,7 +10,7 @@ function Card({ card }) {
       className="
         bg-[#2f4154]
         text-white
-        w-[300px]
+          w-full
         md:w-[320px]
         rounded-xl
         shadow-lg
