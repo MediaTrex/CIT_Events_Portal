@@ -1,16 +1,13 @@
-import { Routes, Route } from 'react-router-dom'
-
-import Card from './components/Card'
-import CardDetails from './pages/CardDetails'
-import Login from './pages/Login'
-
-import cards from './data'
-import HomePage from './pages/HomePage'
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import HomePage from "./pages/HomePage";
+import Layout from "./Layouts/Layout";
+import Signup from "./pages/Signup";
 
 function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />}>
+    return (
+        <Routes>
+            {/* <Route path="/" element={<HomePage />}>
         <Route
           index
           element={
@@ -26,10 +23,36 @@ function App() {
 
         <Route path="login" element={<Login />} />
 
-      </Route>
+      </Route> */}
 
-    </Routes>
-  )
+            <Route
+                path="/"
+                element={
+                    <Layout>
+                        <HomePage />
+                    </Layout>
+                }
+            />
+
+            <Route
+                path="/login"
+                element={
+                    <Layout>
+                        <Login />
+                    </Layout>
+                }
+            />
+
+            <Route
+                path="/signup"
+                element={
+                    <Layout>
+                        <Signup />
+                    </Layout>
+                }
+            />
+        </Routes>
+    );
 }
 
-export default App
+export default App;

@@ -1,20 +1,18 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
-
-import Navbar from '../components/Navbar'
-import Search from '../Search'
+import Card from "../components/Card";
+import cards from "../data";
+import Search from "../Search";
 
 const HomePage = () => {
-  return (
-    <div>
+    return (
+        <div>
+            <Search />
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
+              {cards.map(card => (
+                <Card key={card.id} card={card} />
+              ))}
+            </div>
+        </div>
+    );
+};
 
-      <Navbar />
-      <Search />
-
-      <Outlet />
-
-    </div>
-  )
-}
-
-export default HomePage
+export default HomePage;
