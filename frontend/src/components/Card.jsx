@@ -12,7 +12,7 @@ function Card({ card }) {
         text-white
         w-full
         sm:w-[280px]
-        md:w-[320px]
+        md:w-[350px]
         rounded-xl
         shadow-lg
         p-5

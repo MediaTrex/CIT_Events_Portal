@@ -29,4 +29,4 @@ const btnStyle = {
   fontWeight: "bold"
 }
 
-export default Login
+export default Login;
