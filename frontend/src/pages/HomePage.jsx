@@ -5,15 +5,17 @@ import { Outlet } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-100">
       {/* Navbar */}
       <Navbar />
 
-      {/* Search Bar */}
-      <Search />
+      {/* Search */}
+      <div className="mt-2">
+        <Search />
+      </div>
 
-      {/* Main Content Area */}
-      <main className="flex-grow">
+      {/* Main Content */}
+      <main className="flex-grow container mx-auto px-4 py-6">
         <Outlet />
       </main>
 
