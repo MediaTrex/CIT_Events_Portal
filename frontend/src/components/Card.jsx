@@ -10,7 +10,8 @@ function Card({ card }) {
       className="
         bg-[#2f4154]
         text-white
-          w-full
+        w-full
+        sm:w-[280px]
         md:w-[320px]
         rounded-xl
         shadow-lg
@@ -23,7 +24,7 @@ function Card({ card }) {
       "
     >
       {/* Title */}
-      <h3 className="text-xl font-serif text-yellow-300 text-center mb-4">
+      <h3 className="text-xl font-serif text-yellow-300 text-center mb-3">
         {card.title}
       </h3>
 
@@ -31,7 +32,7 @@ function Card({ card }) {
       <img
         src={card.image}
         alt={card.title}
-        className="w-full h-40 object-cover rounded-md mb-4"
+        className="w-full h-40 object-cover rounded-md mb-3"
       />
 
       {/* Content */}
@@ -39,25 +40,21 @@ function Card({ card }) {
 
       {/* Info Section */}
       <div className="space-y-2 text-sm text-gray-300">
-        {/* Date */}
         <div className="flex items-center gap-2">
           <Calendar size={16} />
           <span>2026-02-10</span>
         </div>
 
-        {/* Location */}
         <div className="flex items-center gap-2">
           <MapPin size={16} />
           <span>Campus / Online</span>
         </div>
 
-        {/* Fee */}
         <div className="flex items-center gap-2">
           <IndianRupee size={16} />
           <span>150</span>
         </div>
 
-        {/* Participants */}
         <div className="flex items-center gap-2">
           <Users size={16} />
           <span>1-10</span>
