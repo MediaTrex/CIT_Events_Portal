@@ -1,6 +1,6 @@
 import Card from "../components/Card";
 import cards from "../data";
-import Search from "../Search";
+import Search from "../components/Search";
 
 const HomePage = () => {
     return (
