@@ -3,6 +3,9 @@ import Login from "./pages/Login";
 import HomePage from "./pages/HomePage";
 import Layout from "./Layouts/Layout";
 import Signup from "./pages/Signup";
+import EventHub from "./pages/EventHub";
+import FallBack404 from "./pages/FallBack404";
+import './index.css';
 
 function App() {
     return (
@@ -33,7 +36,23 @@ function App() {
                     </Layout>
                 }
             />
-            </Routes>
+            <Route
+                path="/EventHub/:tab"
+                element={
+                    <Layout>
+                        <EventHub />
+                    </Layout>
+                }
+            />
+            <Route
+                path="*"
+                element={
+                    <Layout>
+                        <FallBack404 />
+                    </Layout>
+                }
+            />
+        </Routes>
     );
 }
 
