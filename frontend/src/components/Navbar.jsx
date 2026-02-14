@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <nav className="flex items-center justify-between bg-slate-800 h-26 px-5 text-white">
+    <nav className="flex items-center justify-between bg-slate-800 h-26 px-5 text-white shadow-lg">
       <h2 className="text-xl font-semibold">
         <img
-          src="chennai-cit-logo.svg"
+          src="/chennai-cit-logo.svg"
           alt="Chennai CIT College Logo"
           className="h-15 object-contain"
         />

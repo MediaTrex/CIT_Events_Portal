@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Facebook,
   Twitter,
@@ -9,7 +8,7 @@ import {
 
 function Footer() {
   return (
-    <footer className="w-full bg-[#3f3f3f] text-white px-6 py-10 mt-5">
+    <footer className="w-full bg-[#3f3f3f] text-white px-6 py-10">
       {/* Top Row */}
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Left Side */}
@@ -77,7 +76,7 @@ function Footer() {
 
       {/* Bottom Text */}
       <div className="text-center text-sm text-gray-400">
-        © 2026 Chennai Institute of Technology. All Rights Reserved.
+        © {new Date().getFullYear()} Chennai Institute of Technology. All Rights Reserved.
       </div>
     </footer>
   );
