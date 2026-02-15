@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import getDB from '../config/connection.js'
 import { generateToken } from "../lib/tokenUtils.js";
 import transporter from "../config/nodemailer.js";
-import { EMAIL_VERIFY_TEMPLATE, PASSWORD_RESET_TEMPLATE, PASSWORD_RESET_SUCCESSFULLY_TEMPLATE } from "../config/emailTemplates.js";
+import { PASSWORD_RESET_TEMPLATE, PASSWORD_RESET_SUCCESSFULLY_TEMPLATE } from "../config/emailTemplates.js";
 
 export const registerUser = async (req, res) => {
   const { name, email, password, role, college, phone } = req.body;
@@ -112,53 +112,54 @@ export const logoutUser = async (req, res) => {
   }
 };
 
-export const sendVerifyOtp = async (req, res) => {
-  const db = await getDB();
-  const userId = req.userId;
-  console.log("User ID in sendVerifyOtp:", userId);
+// export const sendVerifyOtp = async (req, res) => {
+//   const db = await getDB();
+//   const userId = req.userId;
 
-  if (!userId)
-    return res.json({
-      success: false,
-      message: "Something Went Wrong ! Login Again",
-    });
+//   if (!userId)
+//     return res.json({
+//       success: false,
+//       message: "Something Went Wrong ! Login Again",
+//     });
 
-  try {
-    const user = await db.query(
-      "SELECT email, is_verified, resetOtp, resetOtpExpiryAt FROM users WHERE id = ?",
-      [userId]
-    );
+//   try {
+//     const user = await db.query(
+//       "SELECT email, is_verified, resetOtp, resetOtpExpiryAt FROM users WHERE id = ?",
+//       [userId]
+//     );
+//     console.log(user[0]);
+//     console.log(user[0].is_verified);
 
-    if (user[0].is_verified)
-      return res.json({ success: false, message: "User Already Verified" });
+//     if (user[0].is_verified)
+//       return res.json({ success: false, message: "User Already Verified" });
 
-    const otp = String(Math.floor(100000 + Math.random() * 900000));
+//     const otp = String(Math.floor(100000 + Math.random() * 900000));
 
-    await db.query(
-      "UPDATE users SET resetOtp = ?, resetOtpExpiryAt = ? WHERE id = ?",
-      [otp, Date.now() + 24 * 60 * 60 * 1000, userId]
-    );
+//     await db.query(
+//       "UPDATE users SET resetOtp = ?, resetOtpExpiryAt = ? WHERE id = ?",
+//       [otp, Date.now() + 24 * 60 * 60 * 1000, userId]
+//     );
 
-    const mailOption = {
-      from: process.env.SENDER_EMAIL,
-      to: user[0].email,
-      subject: "Account Verification OTP",
-      html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace(
-        "{{email}}",
-        user[0].email
-      ),
-    };
+//     const mailOption = {
+//       from: process.env.SENDER_EMAIL,
+//       to: user[0].email,
+//       subject: "Account Verification OTP",
+//       html: EMAIL_VERIFY_TEMPLATE.replace("{{otp}}", otp).replace(
+//         "{{email}}",
+//         user[0].email
+//       ),
+//     };
 
-    await transporter.sendMail(mailOption);
+//     await transporter.sendMail(mailOption);
 
-    return res.json({ success: true, message: "OTP sent successfully" });
-  } catch (error) {
-    console.log("Error in sendVerifyOtp:", error);
-    return res.json({ success: false, message: error.message });
-  }finally{
-    db.release();
-  }
-};
+//     return res.json({ success: true, message: "OTP sent successfully" });
+//   } catch (error) {
+//     console.log("Error in sendVerifyOtp:", error);
+//     return res.json({ success: false, message: error.message });
+//   }finally{
+//     db.release();
+//   }
+// };
 
 export const isAuthenticated = async (req, res) => {
   try {
@@ -168,45 +169,45 @@ export const isAuthenticated = async (req, res) => {
   }
 };
 
-export const verifyEmail = async (req, res) => {
-  const db = await getDB();
-  const userId = req.userId;
-  const { otp, email } = req.body;
+// export const verifyEmail = async (req, res) => {
+//   const db = await getDB();
+//   const userId = req.userId;
+//   const { otp, email } = req.body;
 
-  if (!userId)
-    return res.json({
-      success: false,
-      message: "Not Authorized, Please login again",
-    });
+//   if (!userId)
+//     return res.json({
+//       success: false,
+//       message: "Not Authorized, Please login again",
+//     });
 
-  if (!otp) return res.json({ success: false, message: "Missing Details" });
+//   if (!otp) return res.json({ success: false, message: "Missing Details" });
 
-  try {
-    const user = await db.query(
-      "SELECT verifyOtp, verifyOtpExpireAt FROM users WHERE id = ? AND email = ?",
-      [userId, email]
-    );
+//   try {
+//     const user = await db.query(
+//       "SELECT verifyOtp, verifyOtpExpireAt FROM users WHERE id = ? AND email = ?",
+//       [userId, email]
+//     );
 
-    if (!user[0]) return res.json({ success: false, message: "User Not Found" });
+//     if (!user[0]) return res.json({ success: false, message: "User Not Found" });
 
-    if (user[0].verifyOtp === "" || user[0].verifyOtp !== otp)
-      return res.json({ success: false, message: "Invalid OTP" });
+//     if (user[0].verifyOtp === "" || user[0].verifyOtp !== otp)
+//       return res.json({ success: false, message: "Invalid OTP" });
 
-    if (user[0].verifyOtpExpireAt < Date.now())
-      return res.json({ success: false, message: "OTP Expired, Send Again" });
+//     if (user[0].verifyOtpExpireAt < Date.now())
+//       return res.json({ success: false, message: "OTP Expired, Send Again" });
 
-    await db.query(
-      "UPDATE users SET isAccountVerified = 1, verifyOtp = '', verifyOtpExpireAt = 0 WHERE id = ?",
-      [userId]
-    );
-    return res.json({ success: true, message: "Email Verified Successfully" });
-  } catch (error) {
-    console.log("Error in verifyEmail:", error);
-    return res.json({ success: false, message: error.message });
-  } finally {
-    db.release();
-  }
-};
+//     await db.query(
+//       "UPDATE users SET isAccountVerified = 1, verifyOtp = '', verifyOtpExpireAt = 0 WHERE id = ?",
+//       [userId]
+//     );
+//     return res.json({ success: true, message: "Email Verified Successfully" });
+//   } catch (error) {
+//     console.log("Error in verifyEmail:", error);
+//     return res.json({ success: false, message: error.message });
+//   } finally {
+//     db.release();
+//   }
+// };
 
 export const sendResetOtp = async (req, res) => {
   const db = await getDB();
