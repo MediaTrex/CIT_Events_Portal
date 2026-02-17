@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Profile from "../components/Profile";
 import CreateTeam from "../components/CreateTeam";
 import RegisteredEvents from "../components/RegisteredEvents";
+import CreateEvent from "../components/CreateEvent";
 
 const EventHub = () => {
     let { tab } = useParams();
@@ -49,7 +50,8 @@ const EventHub = () => {
     if (
         tab !== "profile" &&
         tab !== "createTeam" &&
-        tab !== "registeredEvents"
+        tab !== "registeredEvents" &&
+        tab !== "createEvent"
     ) {
         return <FallBack404 />;
     }
@@ -96,6 +98,13 @@ const EventHub = () => {
                         >
                             Registered Events
                         </Link>
+                        
+                        <Link
+                            to="/EventHub/createEvent"
+                            className={`${tab === "createEvent" && "bg-slate-100 text-blue-600"} max-sm:text-sm max-sm:py-2  px-6 py-2.5 rounded-tl-xl rounded-tr-xl cursor-pointer hover:outline hover:outline-slate-200 text-nowrap`}
+                        >
+                           Event Creations
+                        </Link>
                     </div>
 
                     {/* Right Arrow */}
@@ -114,6 +123,7 @@ const EventHub = () => {
                     {tab === "profile" && <Profile />}
                     {tab === "createTeam" && <CreateTeam />}
                     {tab === "registeredEvents" && <RegisteredEvents />}
+                    {tab === "createEvent" && <CreateEvent />}
                 </div>
             </div>
         </div>
