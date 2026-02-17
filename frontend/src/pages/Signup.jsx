@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import InputBox from "../components/InputBox";
-import { KeyRound, Mail, Phone, School } from "lucide-react";
+import { KeyRound, Mail, Phone, School, UserPen } from "lucide-react";
 import { useState } from "react";
 import Carousel from "../components/Carousel";
 
@@ -27,6 +27,7 @@ const Signup = () => {
                         </Link>
                     </p>
                     <InputBox
+                        icon={UserPen}
                         type="text"
                         placeholder="Participant Name"
                         className="mt-5 max-sm:py-2 max-sm:text-sm"
@@ -53,7 +54,7 @@ const Signup = () => {
                             <select
                                 id="mySelect"
                                 required
-                                className= "border border-gray-300 block max-sm:py-2 max-sm:text-sm w-full font-semibold text-lg py-3 px-5 bg-white focus:outline-none rounded-full appearance-none text-gray-500"
+                                className="border border-gray-300 block max-sm:py-2 max-sm:text-sm w-full font-semibold text-lg py-3 px-5 bg-white focus:outline-none rounded-full appearance-none text-gray-500"
                             >
                                 <option value="">
                                     --External Participant Type--

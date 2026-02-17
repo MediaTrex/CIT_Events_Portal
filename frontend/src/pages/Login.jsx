@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import InputBox from "../components/InputBox";
-import { KeyRound } from "lucide-react";
+import { KeyRound, Mail } from "lucide-react";
 import Carousel from "../components/Carousel";
 
 const Login = () => {
     return (
         <div className="flex min-h-screen p-6 pt-20 bg-linear-to-tr from-slate-300 to-slate-500">
-            <div className="mx-auto flex  h-150 max-lg:h-fit  rounded-lg overflow-hidden shadow">
+            <div className="mx-auto flex  max-h-155 max-lg:h-fit  rounded-lg overflow-hidden shadow">
                 <Carousel />
-                <form className="flex flex-1 flex-col items-center justify-center gap-3 bg-[rgb(242,245,251)] w-md shadow p-6">
+                <form className="flex flex-1 flex-col items-center justify-center gap-3 bg-[rgb(242,245,251)] w-md shadow p-4">
                     <h1 className="text-center text-4xl font-bold max-sm:text-3xl">
                         Sign In
                     </h1>
@@ -24,6 +24,7 @@ const Login = () => {
                         </Link>
                     </p>
                     <InputBox
+                        icon={Mail}
                         type="text"
                         placeholder="Email"
                         className="mt-5 max-sm:py-2 max-sm:text-sm"

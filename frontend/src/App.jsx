@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import EventHub from "./pages/EventHub";
 import FallBack404 from "./pages/FallBack404";
 import './index.css';
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
     return (
@@ -41,6 +42,14 @@ function App() {
                 element={
                     <Layout>
                         <EventHub />
+                    </Layout>
+                }
+            />
+            <Route
+                path="/resetPassword"
+                element={
+                    <Layout>
+                        <ResetPassword />
                     </Layout>
                 }
             />
