@@ -101,7 +101,7 @@ function CreateTeam() {
                         </div>
 
                         {/* Submit Button */}
-                        <button className="w-full bg-yellow-500 text-white font-semibold py-2 rounded-lg hover:bg-yellow-600 transition">
+                        <button className="w-full cursor-pointer bg-yellow-500 text-white font-semibold py-2 rounded-lg hover:bg-yellow-600 transition">
                             Submit
                         </button>
                     </div>
