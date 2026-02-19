@@ -1,63 +1,88 @@
 import bcrypt from "bcrypt";
-import getDB from '../config/connection.js'
+import getDB from "../config/connection.js";
 import { generateToken } from "../lib/tokenUtils.js";
 import transporter from "../config/nodemailer.js";
-import { PASSWORD_RESET_TEMPLATE, PASSWORD_RESET_SUCCESSFULLY_TEMPLATE } from "../config/emailTemplates.js";
+import {
+  PASSWORD_RESET_TEMPLATE,
+  PASSWORD_RESET_SUCCESSFULLY_TEMPLATE,
+} from "../config/emailTemplates.js";
 
 export const registerUser = async (req, res) => {
-  const { name, email, password, role, college, phone } = req.body;
-  const db = await getDB();
-
   try {
-    if (!name || !email || !password || !role) {
+    const {
+      name,
+      phone,
+      email,
+      password,
+      college,
+      dob,
+      user_type,
+      external_types,
+      role,
+    } = req.body;
+
+
+    if (!name || !email || !password || !user_type || !role) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const db = await getDB();
+
+    // Role-based validation
+    if (role === "participant") {
+      if (!dob || !college) {
+        return res.status(400).json({
+          message: "DOB and College are required for participants",
+        });
+      }
+    }
+
+    // user_type validation
+    if (user_type === "External" && !external_types) {
       return res.status(400).json({
-        success: false,
-        message: "Name, email, password and role are required"
+        message: "External users must provide external_types",
       });
     }
 
-    if (password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must be at least 6 characters"
-      });
-    }
-
-    // Check if user already exists
-    const [existingUser] = await db.query(
+    const [existingUser] = await db.execute(
       "SELECT id FROM users WHERE email = ?",
-      [email]
+      [email],
     );
 
     if (existingUser.length > 0) {
-      return res.status(409).json({
-        success: false,
-        message: "User already exists"
-      });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
-    //  Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    //  Insert user
-    const [result] = await db.query(
-      `INSERT INTO users (name,email, password, role, college, phone)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      [name, email, hashedPassword, role, college || null, phone || null]
+    const [result] = await db.execute(
+      `INSERT INTO users 
+      (name, phone, email, password, college, dob, user_type, external_types, role) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [
+        name,
+        phone || null,
+        email,
+        hashedPassword,
+        college || null,
+        dob || null,
+        user_type,
+        external_types || null,
+        role,
+      ],
     );
 
-    //  Success
-    res.status(201).json({
-      success: true,
-      message: "User registered successfully",
-      userId: result.insertId
-    });
 
+
+    return res.status(201).json({
+      message: "User created successfully",
+      userId: result.insertId,
+    });
   } catch (error) {
-    console.log("Error in registerUser:", error);
-    res.status(500).json({
-      success: false,
-      message: error.message
+    console.error(error);
+    return res.status(500).json({
+      message: "Server Error",
+      error: error.message,
     });
   } finally {
     db.release();
@@ -66,33 +91,41 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { email, password } = req.body;
-  const db = await getDB();
 
   if (!email || !password)
-    return res.status(400).json({ success: false, message: "All fields are required" });
+    return res
+      .status(400)
+      .json({ success: false, message: "All fields are required" });
+
+   const db = await getDB();
 
   try {
     const [user] = await db.query(
-        "SELECT id, password FROM users WHERE email = ?",
-        [email]
-      );
+      "SELECT id, password, role FROM users WHERE email = ?",
+      [email],
+    );
 
-    if (!user) return res.status(400).json({ success: false, message: "Invalid credentials" });
+    if (!user)
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user[0].password);
 
     if (!isMatch)
-      return res.status(400).json({ success: false, message: "Invalid credentials" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid credentials" });
 
-   // Generate Token
-    generateToken(user[0].id,res);
+      console.log(user[0].id,user[0].role);
+    // Generate Token
+    generateToken({id:user[0].id,roles:user[0].role}, res);
 
     res.status(200).json({ success: true, message: "Login Success" });
-
   } catch (error) {
     console.log("Error in loginUser:", error);
     return res.status(500).json({ success: false, message: error.message });
-  } finally{
+  } finally {
     db.release();
   }
 };
@@ -216,18 +249,18 @@ export const sendResetOtp = async (req, res) => {
   if (!email) return res.json({ success: false, message: "Email is Required" });
 
   try {
-    const user = await db.query(
-      "SELECT id, email FROM users WHERE email = ?",
-      [email]
-    );
+    const user = await db.query("SELECT id, email FROM users WHERE email = ?", [
+      email,
+    ]);
 
-    if (!user[0]) return res.json({ success: false, message: "User Not Found" });
+    if (!user[0])
+      return res.json({ success: false, message: "User Not Found" });
 
     const otp = String(Math.floor(100000 + Math.random() * 900000));
 
     await db.query(
       "UPDATE users SET resetOtp = ?, resetOtpExpireAt = ? WHERE id = ?",
-      [otp, Date.now() + 20 * 60 * 1000, user[0].id]
+      [otp, Date.now() + 20 * 60 * 1000, user[0].id],
     );
 
     const mailOption = {
@@ -236,7 +269,7 @@ export const sendResetOtp = async (req, res) => {
       subject: "Password Reset OTP",
       html: PASSWORD_RESET_TEMPLATE.replace("{{otp}}", otp).replace(
         "{{email}}",
-        user[0].email
+        user[0].email,
       ),
     };
 
@@ -265,10 +298,11 @@ export const resetPassword = async (req, res) => {
   try {
     const user = await db.query(
       "SELECT id, resetOtp, resetOtpExpireAt FROM users WHERE email = ?",
-      [email]
+      [email],
     );
 
-    if (!user[0]) return res.json({ success: false, message: "User Not Found" });
+    if (!user[0])
+      return res.json({ success: false, message: "User Not Found" });
 
     if (user[0].resetOtp === "" || user[0].resetOtp !== otp)
       return res.json({ success: false, message: "Invalid OTP" });
@@ -283,7 +317,7 @@ export const resetPassword = async (req, res) => {
 
     await db.query(
       "UPDATE users SET password = ?, resetOtp = '', resetOtpExpireAt = 0 WHERE id = ?",
-      [hashedPassword, user[0].id]
+      [hashedPassword, user[0].id],
     );
 
     await user.save();
@@ -295,7 +329,7 @@ export const resetPassword = async (req, res) => {
       text: `Your Password for ${email} is reset successfully.`,
       html: PASSWORD_RESET_SUCCESSFULLY_TEMPLATE.replace(
         "{{email}}",
-        user[0].email
+        user[0].email,
       ),
     };
 
