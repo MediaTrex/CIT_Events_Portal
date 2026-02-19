@@ -5,6 +5,7 @@ import Profile from "../components/Profile";
 import CreateTeam from "../components/CreateTeam";
 import RegisteredEvents from "../components/RegisteredEvents";
 import CreateEvent from "../components/CreateEvent";
+import MyEvents from "../components/MyEvents";
 
 const EventHub = () => {
     let { tab } = useParams();
@@ -51,7 +52,8 @@ const EventHub = () => {
         tab !== "profile" &&
         tab !== "createTeam" &&
         tab !== "registeredEvents" &&
-        tab !== "createEvent"
+        tab !== "createEvent" &&
+        tab !== "myEvents"
     ) {
         return <FallBack404 />;
     }
@@ -98,12 +100,18 @@ const EventHub = () => {
                         >
                             Registered Events
                         </Link>
-                        
+
                         <Link
                             to="/EventHub/createEvent"
                             className={`${tab === "createEvent" && "bg-slate-100 text-blue-600"} max-sm:text-sm max-sm:py-2  px-6 py-2.5 rounded-tl-xl rounded-tr-xl cursor-pointer hover:outline hover:outline-slate-200 text-nowrap`}
                         >
-                           Event Creations
+                            Event Creations
+                        </Link>
+                        <Link
+                            to="/EventHub/myEvents"
+                            className={`${tab === "myEvents" && "bg-slate-100 text-blue-600"} max-sm:text-sm max-sm:py-2  px-6 py-2.5 rounded-tl-xl rounded-tr-xl cursor-pointer hover:outline hover:outline-slate-200 text-nowrap`}
+                        >
+                            My Events
                         </Link>
                     </div>
 
@@ -123,7 +131,10 @@ const EventHub = () => {
                     {tab === "profile" && <Profile />}
                     {tab === "createTeam" && <CreateTeam />}
                     {tab === "registeredEvents" && <RegisteredEvents />}
+
+                    {/* only for organizer */}
                     {tab === "createEvent" && <CreateEvent />}
+                    {tab === "myEvents" && <MyEvents />}
                 </div>
             </div>
         </div>
