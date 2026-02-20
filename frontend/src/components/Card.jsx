@@ -11,8 +11,8 @@ function Card({ card }) {
         bg-[#2f4154]
         text-white
         w-full
-        sm:w-[280px]
-        md:w-[350px]
+        sm:w-70
+        md:w-87.5
         rounded-xl
         shadow-lg
         p-5
