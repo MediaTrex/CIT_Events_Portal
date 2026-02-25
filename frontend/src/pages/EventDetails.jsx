@@ -39,8 +39,8 @@ function EventDetails() {
                 <div className=" flex-1">
                     <img
                         src={event.bannerUrl}
-                        alt={event.name}
-                        className="w-full h-full object-cover"
+                        alt={"Event banner"}
+                        className="w-full h-full object-cover border border-gray-400 bg-gray-200"
                     />
                 </div>
 
