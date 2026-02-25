@@ -56,8 +56,8 @@ function EventDetails() {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Name</h1>
-                                <p className="text-[15px] text-slate-600">{event.name}</p>
+                                <h1 className="font-semibold max-sm:text-sm ">Event Name</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">{event.name}</p>
                             </div>
                         </div>
                         {/* event description */}
@@ -68,10 +68,10 @@ function EventDetails() {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">
+                                <h1 className="font-semibold  max-sm:text-sm ">
                                     Event Description
                                 </h1>
-                                <p className="text-[15px] text-slate-600">
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.eventDescription}
                                 </p>
                             </div>
@@ -85,10 +85,10 @@ function EventDetails() {
                                     </span>
                                 </div>
                                 <div>
-                                    <h1 className="font-semibold">
+                                    <h1 className="font-semibold  max-sm:text-sm ">
                                         Policy/Rules{" "}
                                     </h1>
-                                    <ul className="text-[15px] list-disc pl-4 text-slate-600">
+                                    <ul className="text-[15px] list-disc pl-4 text-slate-600 max-sm:text-[12px]">
                                         {event.policy
                                             .split("\n")
                                             .map((rule, index) => (
@@ -107,8 +107,8 @@ function EventDetails() {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Participants</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold  max-sm:text-sm ">Participants</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.participantsAllowedInTeam > 1
                                         ? `1 - ${event.participantsAllowedInTeam}`
                                         : `1`}
@@ -123,8 +123,8 @@ function EventDetails() {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Date</h1>
-                                <p className="text-[15px] text-slate-600" >{event.date}</p>
+                                <h1 className="font-semibold  max-sm:text-sm ">Event Date</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]" >{event.date}</p>
                             </div>
                         </div>
                         {/* event venue */}
@@ -135,8 +135,8 @@ function EventDetails() {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Venue</h1>
-                                <p className="text-[15px] text-slate-600">{event.venue}</p>
+                                <h1 className="font-semibold  max-sm:text-sm ">Event Venue</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">{event.venue}</p>
                             </div>
                         </div>
                         {/* event time */}
@@ -147,8 +147,8 @@ function EventDetails() {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Time</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold  max-sm:text-sm ">Event Time</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {formatTime24to12(event.time)}
                                 </p>
                             </div>
@@ -161,8 +161,8 @@ function EventDetails() {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Conducted By</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold  max-sm:text-sm ">Conducted By</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.conductedBy}
                                 </p>
                             </div>
@@ -175,7 +175,7 @@ function EventDetails() {
                     <div className="text-center mt-4">
                         <Link
                             to="/"
-                            className="inline-block bg-yellow-300 px-6 py-2 rounded-md hover:bg-yellow-400 transition"
+                            className="inline-block bg-yellow-300 px-6 py-2 rounded-md hover:bg-yellow-400 transition  max-sm:text-sm max-sm:px-4 max-sm:py-1"
                         >
                             Back
                         </Link>

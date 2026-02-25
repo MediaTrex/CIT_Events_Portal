@@ -56,8 +56,8 @@ const MyEventsEventDetails = () => {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Name</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold  max-sm:text-sm ">Event Name</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.name}
                                 </p>
                             </div>
@@ -70,10 +70,10 @@ const MyEventsEventDetails = () => {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">
+                                <h1 className="font-semibold max-sm:text-sm">
                                     Event Description
                                 </h1>
-                                <p className="text-[15px] text-slate-600">
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.eventDescription}
                                 </p>
                             </div>
@@ -87,10 +87,10 @@ const MyEventsEventDetails = () => {
                                     </span>
                                 </div>
                                 <div>
-                                    <h1 className="font-semibold">
+                                    <h1 className="font-semibold max-sm:text-sm">
                                         Policy/Rules{" "}
                                     </h1>
-                                    <ul className="text-[15px] list-disc pl-4 text-slate-600">
+                                    <ul className="text-[15px] list-disc pl-4 text-slate-600 max-sm:text-[12px]">
                                         {event.policy
                                             .split("\n")
                                             .map((rule, index) => (
@@ -109,8 +109,8 @@ const MyEventsEventDetails = () => {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Participants</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold max-sm:text-sm">Participants</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.participantsAllowedInTeam > 1
                                         ? `1 - ${event.participantsAllowedInTeam}`
                                         : `1`}
@@ -125,8 +125,8 @@ const MyEventsEventDetails = () => {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Date</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold max-sm:text-sm">Event Date</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.date}
                                 </p>
                             </div>
@@ -139,8 +139,8 @@ const MyEventsEventDetails = () => {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Venue</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold max-sm:text-sm">Event Venue</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.venue}
                                 </p>
                             </div>
@@ -153,8 +153,8 @@ const MyEventsEventDetails = () => {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Event Time</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold max-sm:text-sm">Event Time</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {formatTime24to12(event.time)}
                                 </p>
                             </div>
@@ -167,8 +167,8 @@ const MyEventsEventDetails = () => {
                                 </span>
                             </div>
                             <div>
-                                <h1 className="font-semibold">Conducted By</h1>
-                                <p className="text-[15px] text-slate-600">
+                                <h1 className="font-semibold max-sm:text-sm">Conducted By</h1>
+                                <p className="text-[15px] text-slate-600 max-sm:text-[12px]">
                                     {event.conductedBy}
                                 </p>
                             </div>
@@ -181,7 +181,7 @@ const MyEventsEventDetails = () => {
                     <div className="text-center mt-4 w-full">
                         <Link
                             to="participants"
-                            className="inline-block w-full text-xl text-white bg-yellow-400 px-6 py-2 rounded-md hover:bg-yellow-500 transition"
+                            className="inline-block w-full text-xl text-white bg-yellow-400 px-6 py-2 rounded-md hover:bg-yellow-500 transition max-sm:text-sm"
                         >
                             View all Participants
                         </Link>
