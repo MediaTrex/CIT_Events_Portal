@@ -9,6 +9,7 @@ import "./index.css";
 import ResetPassword from "./pages/ResetPassword";
 import EventDetails from "./pages/EventDetails";
 import MyEventsEventDetails from "./components/EventHub/MyEvents.EventDetails";
+import EventParticipants from "./pages/EventParticipants";
 
 function App() {
     return (
@@ -61,6 +62,14 @@ function App() {
                 element={
                     <Layout>
                         <MyEventsEventDetails />
+                    </Layout>
+                }
+            />
+            <Route
+                path="/EventHub/myEvents/event/:id/participants"
+                element={
+                    <Layout>
+                        <EventParticipants />
                     </Layout>
                 }
             />
