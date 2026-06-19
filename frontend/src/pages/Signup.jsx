@@ -5,7 +5,7 @@ import { useState } from "react";
 import Carousel from "../components/Carousel";
 
 const Signup = () => {
-    const [role, setRole] = useState("");
+    const [userType, setUserType] = useState("");
 
     return (
         <div className="flex min-h-screen p-6 pt-20 bg-linear-to-tr from-slate-300 to-slate-500">
@@ -78,14 +78,14 @@ const Signup = () => {
                         placeholder="Email"
                         className="max-sm:py-2 max-sm:text-sm"
                     />
-                    {role === "external" && (
-                        <InputBox
-                            icon={School}
-                            type="text"
-                            placeholder="College Name"
-                            className=" max-sm:py-2 max-sm:text-sm"
-                        />
-                    )}
+
+                    <InputBox
+                        icon={School}
+                        type="text"
+                        placeholder="College Name"
+                        className=" max-sm:py-2 max-sm:text-sm"
+                    />
+
                     <InputBox
                         icon={KeyRound}
                         type="password"
