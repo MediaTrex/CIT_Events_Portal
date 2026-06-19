@@ -1,4 +1,5 @@
 import { CategoriesSection } from "../components/CategoriesSection";
+import { FeaturedEvents } from "../components/FeaturedEvents";
 import { HeroSection } from "../components/HeroSection";
 import { StatsSection } from "../components/StatsSection";
 
@@ -8,6 +9,7 @@ const Home = () => {
             <HeroSection />
             <StatsSection />
             <CategoriesSection/> 
+            <FeaturedEvents/>
         </div>
     );
 };
