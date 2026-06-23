@@ -1,5 +1,6 @@
 import { CategoriesSection } from "../components/CategoriesSection";
 import { FeaturedEvents } from "../components/FeaturedEvents";
+import { Footer } from "../components/Footer";
 import { HeroSection } from "../components/HeroSection";
 import { StatsSection } from "../components/StatsSection";
 import { SuccessStories } from "../components/SuccessStories";
@@ -14,6 +15,7 @@ const Home = () => {
             <FeaturedEvents/>
             <UpcomingTimeline/>
             <SuccessStories/>
+            <Footer/>
         </div>
     );
 };
