@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
     ArrowRight,
     Eye,
@@ -15,6 +16,22 @@ import MetaData from "../components/MetaData";
 export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+    } = useForm({
+        defaultValues: {
+            fullName: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
+    });
+
+    const onSubmit = () => {};
 
     return (
         <main className="min-h-screen overflow-hidden bg-linear-to-br from-(--cit-primary) via-[#0c5fcc] to-[#1a3a6b] text-white">
@@ -65,8 +82,11 @@ export default function Register() {
                                 </div>
                             </div>
 
-                            <form className="space-y-4">
-                                <label className="block space-y-2">
+                            <form
+                                className="space-y-4"
+                                onSubmit={handleSubmit(onSubmit)}
+                            >
+                                <label className="block space-y-1">
                                     <span className="text-sm font-semibold text-(--cit-text)">
                                         Full name
                                     </span>
@@ -78,12 +98,26 @@ export default function Register() {
                                         <input
                                             type="text"
                                             placeholder="Your full name"
-                                            className="w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-white px-11 py-3.5 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:border-(--cit-primary) focus:ring-2 focus:ring-(--cit-primary-soft)"
+                                            aria-invalid={
+                                                errors.fullName
+                                                    ? "true"
+                                                    : "false"
+                                            }
+                                            className={`w-full rounded-(--cit-radius-md) border px-11 py-3.5 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:ring-2 ${errors.fullName ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-200" : "border-(--cit-border) bg-white focus:border-(--cit-primary) focus:ring-(--cit-primary-soft)"}`}
+                                            {...register("fullName", {
+                                                required:
+                                                    "Full name is required.",
+                                            })}
                                         />
                                     </div>
+                                    {errors.fullName ? (
+                                        <p className="mt-0 text-xs font-medium text-red-600">
+                                            {errors.fullName.message}
+                                        </p>
+                                    ) : null}
                                 </label>
 
-                                <label className="block space-y-2">
+                                <label className="block space-y-1">
                                     <span className="text-sm font-semibold text-(--cit-text)">
                                         Email address
                                     </span>
@@ -95,12 +129,28 @@ export default function Register() {
                                         <input
                                             type="email"
                                             placeholder="you@cit.edu.in"
-                                            className="w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-white px-11 py-3.5 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:border-(--cit-primary) focus:ring-2 focus:ring-(--cit-primary-soft)"
+                                            aria-invalid={
+                                                errors.email ? "true" : "false"
+                                            }
+                                            className={`w-full rounded-(--cit-radius-md) border px-11 py-3.5 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:ring-2 ${errors.email ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-200" : "border-(--cit-border) bg-white focus:border-(--cit-primary) focus:ring-(--cit-primary-soft)"}`}
+                                            {...register("email", {
+                                                required: "Email is required.",
+                                                pattern: {
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message:
+                                                        "Enter a valid email address.",
+                                                },
+                                            })}
                                         />
                                     </div>
+                                    {errors.email ? (
+                                        <p className="mt-0 text-xs font-medium text-red-600">
+                                            {errors.email.message}
+                                        </p>
+                                    ) : null}
                                 </label>
 
-                                <label className="block space-y-2">
+                                <label className="block space-y-1">
                                     <span className="text-sm font-semibold text-(--cit-text)">
                                         Password
                                     </span>
@@ -138,12 +188,31 @@ export default function Register() {
                                                     : "password"
                                             }
                                             placeholder="Create a password"
-                                            className="w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-white px-4 py-3.5 pr-12 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:border-(--cit-primary) focus:ring-2 focus:ring-(--cit-primary-soft)"
+                                            aria-invalid={
+                                                errors.password
+                                                    ? "true"
+                                                    : "false"
+                                            }
+                                            className={`w-full rounded-(--cit-radius-md) border px-4 py-3.5 pr-12 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:ring-2 ${errors.password ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-200" : "border-(--cit-border) bg-white focus:border-(--cit-primary) focus:ring-(--cit-primary-soft)"}`}
+                                            {...register("password", {
+                                                required:
+                                                    "Password is required.",
+                                                minLength: {
+                                                    value: 6,
+                                                    message:
+                                                        "Password must be at least 6 characters.",
+                                                },
+                                            })}
                                         />
                                     </div>
+                                    {errors.password ? (
+                                        <p className="mt-0 text-xs font-medium text-red-600">
+                                            {errors.password.message}
+                                        </p>
+                                    ) : null}
                                 </label>
 
-                                <label className="block space-y-2">
+                                <label className="block space-y-1">
                                     <span className="text-sm font-semibold text-(--cit-text)">
                                         Confirm password
                                     </span>
@@ -181,9 +250,27 @@ export default function Register() {
                                                     : "password"
                                             }
                                             placeholder="Repeat your password"
-                                            className="w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-white px-4 py-3.5 pr-12 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:border-(--cit-primary) focus:ring-2 focus:ring-(--cit-primary-soft)"
+                                            aria-invalid={
+                                                errors.confirmPassword
+                                                    ? "true"
+                                                    : "false"
+                                            }
+                                            className={`w-full rounded-(--cit-radius-md) border px-4 py-3.5 pr-12 text-(--cit-text) outline-none transition-colors duration-150 placeholder:text-(--cit-text-muted) focus:ring-2 ${errors.confirmPassword ? "border-red-300 bg-red-50 focus:border-red-400 focus:ring-red-200" : "border-(--cit-border) bg-white focus:border-(--cit-primary) focus:ring-(--cit-primary-soft)"}`}
+                                            {...register("confirmPassword", {
+                                                required:
+                                                    "Please confirm your password.",
+                                                validate: (value) =>
+                                                    value ===
+                                                        getValues("password") ||
+                                                    "Passwords do not match.",
+                                            })}
                                         />
                                     </div>
+                                    {errors.confirmPassword ? (
+                                        <p className="mt-0 text-xs font-medium text-red-600">
+                                            {errors.confirmPassword.message}
+                                        </p>
+                                    ) : null}
                                 </label>
 
                                 <button
