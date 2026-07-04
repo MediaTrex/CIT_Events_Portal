@@ -23,7 +23,7 @@ import {
 import Layout from "../layout/Layout";
 import MetaData from "../components/MetaData";
 
-// ─── Data ────────────────────────────────────────────────────────────────────
+// --- Data ---
 
 const ALL_EVENTS = [
     {
@@ -226,7 +226,7 @@ const ALL_EVENTS = [
     },
     {
         id: 12,
-        title: "Smart India Hackathon — CIT Round",
+        title: "Smart India Hackathon - CIT Round",
         category: "Hackathon",
         image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=500&h=260&fit=crop&auto=format",
         date: "Oct 5–6, 2025",
@@ -257,7 +257,7 @@ const CATEGORIES = [
 const DEPARTMENTS = ["All", "CSE", "ECE", "IT", "MECH", "CIVIL", "EEE"];
 const EVENTS_PER_PAGE = 9;
 
-// ─── Sub-components ────────────────────────────────────────────────────────────
+// --- Sub-components ---
 
 const categoryColors: Record<string, { color: string; bg: string }> = {
     Hackathon: { color: "#1877F2", bg: "#E7F3FF" },
@@ -281,17 +281,7 @@ function EventCard({ event }: { event: (typeof ALL_EVENTS)[0] }) {
 
     return (
         <div
-            style={{
-                background: "#ffffff",
-                borderRadius: 16,
-                border: "1px solid #DADDE1",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                cursor: "pointer",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-            }}
+            className="flex cursor-pointer flex-col overflow-hidden rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) shadow-(--cit-shadow-sm) transition-all duration-200 hover:-translate-y-1.5 hover:shadow-(--cit-shadow-lg)"
             onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform =
                     "translateY(-6px)";
@@ -306,87 +296,36 @@ function EventCard({ event }: { event: (typeof ALL_EVENTS)[0] }) {
             }}
         >
             {/* Poster */}
-            <div
-                style={{
-                    position: "relative",
-                    height: 168,
-                    background: "#F0F2F5",
-                    flexShrink: 0,
-                }}
-            >
+            <div className="relative h-42 shrink-0 bg-(--cit-bg)">
                 <img
                     src={event.image}
                     alt={event.title}
-                    style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        display: "block",
-                    }}
+                    className="block h-full w-full object-cover"
                 />
-                <div
-                    style={{
-                        position: "absolute",
-                        inset: 0,
-                        background:
-                            "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 55%)",
-                    }}
-                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/45 via-black/10 to-transparent" />
 
                 {/* Top badges */}
-                <div
-                    style={{
-                        position: "absolute",
-                        top: 12,
-                        left: 12,
-                        display: "flex",
-                        gap: 6,
-                    }}
-                >
+                <div className="absolute left-3 top-3 flex gap-1.5">
                     <span
-                        style={{
-                            background: badge.bg,
-                            color: badge.color,
-                            borderRadius: 6,
-                            padding: "3px 10px",
-                            fontFamily: "'Inter', sans-serif",
-                            fontWeight: 700,
-                            fontSize: 11,
-                        }}
+                        className="rounded-(--cit-radius-sm) px-2.5 py-0.5 text-[11px] font-bold"
+                        style={{ background: badge.bg, color: badge.color }}
                     >
                         {event.category}
                     </span>
                     {event.featured && (
-                        <span
-                            style={{
-                                background: "#F7B928",
-                                color: "#fff",
-                                borderRadius: 6,
-                                padding: "3px 10px",
-                                fontFamily: "'Inter', sans-serif",
-                                fontWeight: 700,
-                                fontSize: 11,
-                            }}
-                        >
+                        <span className="rounded-(--cit-radius-sm) bg-(--cit-warning) px-2.5 py-0.5 text-[11px] font-bold text-white">
                             ★ Featured
                         </span>
                     )}
                 </div>
 
                 {/* Free / Paid badge */}
-                <div style={{ position: "absolute", top: 12, right: 12 }}>
+                <div className="absolute right-3 top-3">
                     <span
+                        className="flex items-center gap-1 rounded-(--cit-radius-sm) px-2.5 py-0.5 text-[11px] font-bold"
                         style={{
                             background: event.paid ? "#FDE8E8" : "#E6F9E3",
                             color: event.paid ? "#FA3E3E" : "#42B72A",
-                            borderRadius: 6,
-                            padding: "3px 10px",
-                            fontFamily: "'Inter', sans-serif",
-                            fontWeight: 700,
-                            fontSize: 11,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 4,
                         }}
                     >
                         {event.paid ? (
@@ -399,21 +338,8 @@ function EventCard({ event }: { event: (typeof ALL_EVENTS)[0] }) {
                 </div>
 
                 {/* Mode badge — bottom */}
-                <div style={{ position: "absolute", bottom: 10, left: 12 }}>
-                    <span
-                        style={{
-                            background: "rgba(0,0,0,0.65)",
-                            color: "#fff",
-                            borderRadius: 6,
-                            padding: "3px 10px",
-                            fontFamily: "'Inter', sans-serif",
-                            fontWeight: 600,
-                            fontSize: 11,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 4,
-                        }}
-                    >
+                <div className="absolute bottom-2.5 left-3">
+                    <span className="flex items-center gap-1 rounded-(--cit-radius-sm) bg-black/65 px-2.5 py-0.5 text-[11px] font-semibold text-white">
                         {event.mode === "Online" ? (
                             <Wifi size={11} />
                         ) : (
@@ -424,21 +350,8 @@ function EventCard({ event }: { event: (typeof ALL_EVENTS)[0] }) {
                 </div>
 
                 {/* Team/Individual badge — bottom right */}
-                <div style={{ position: "absolute", bottom: 10, right: 12 }}>
-                    <span
-                        style={{
-                            background: "rgba(0,0,0,0.65)",
-                            color: "#fff",
-                            borderRadius: 6,
-                            padding: "3px 10px",
-                            fontFamily: "'Inter', sans-serif",
-                            fontWeight: 600,
-                            fontSize: 11,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 4,
-                        }}
-                    >
+                <div className="absolute bottom-2.5 right-3">
+                    <span className="flex items-center gap-1 rounded-(--cit-radius-sm) bg-black/65 px-2.5 py-0.5 text-[11px] font-semibold text-white">
                         {event.type === "Team" ? (
                             <UsersRound size={11} />
                         ) : (
@@ -450,121 +363,50 @@ function EventCard({ event }: { event: (typeof ALL_EVENTS)[0] }) {
             </div>
 
             {/* Body */}
-            <div
-                style={{
-                    padding: "16px 18px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 10,
-                    flex: 1,
-                }}
-            >
-                <h3
-                    style={{
-                        fontFamily: "'Inter', sans-serif",
-                        fontWeight: 700,
-                        fontSize: 15,
-                        color: "#1C1E21",
-                        margin: 0,
-                        lineHeight: 1.35,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                    }}
-                >
+            <div className="flex flex-1 flex-col gap-2.5 px-4.5 py-4">
+                <h3 className="line-clamp-2 m-0 text-[15px] font-bold leading-snug text-(--cit-text)">
                     {event.title}
                 </h3>
 
-                <div
-                    style={{ display: "flex", flexDirection: "column", gap: 6 }}
-                >
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 7,
-                        }}
-                    >
+                <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center gap-1.5">
                         <Calendar
                             size={13}
-                            color="#1877F2"
-                            style={{ flexShrink: 0 }}
+                            color="var(--cit-primary)"
+                            className="shrink-0"
                         />
-                        <span
-                            style={{
-                                fontFamily: "'Inter', sans-serif",
-                                fontSize: 12,
-                                color: "#65676B",
-                            }}
-                        >
+                        <span className="text-xs text-(--cit-text-muted)">
                             {event.date}
                         </span>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 7,
-                        }}
-                    >
+                    <div className="flex items-center gap-1.5">
                         <MapPin
                             size={13}
-                            color="#65676B"
-                            style={{ flexShrink: 0 }}
+                            color="var(--cit-text-muted)"
+                            className="shrink-0"
                         />
-                        <span
-                            style={{
-                                fontFamily: "'Inter', sans-serif",
-                                fontSize: 12,
-                                color: "#65676B",
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
+                        <span className="truncate text-xs text-(--cit-text-muted)">
                             {event.venue}
                         </span>
                     </div>
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 7,
-                        }}
-                    >
+                    <div className="flex items-center gap-1.5">
                         <Clock
                             size={13}
-                            color="#FA3E3E"
-                            style={{ flexShrink: 0 }}
+                            color="var(--cit-danger)"
+                            className="shrink-0"
                         />
-                        <span
-                            style={{
-                                fontFamily: "'Inter', sans-serif",
-                                fontSize: 12,
-                                color: "#FA3E3E",
-                                fontWeight: 600,
-                            }}
-                        >
+                        <span className="text-xs font-semibold text-(--cit-danger)">
                             Deadline: {event.deadline}
                         </span>
                     </div>
                 </div>
 
                 {/* Tags */}
-                <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
+                <div className="flex flex-wrap gap-1.5">
                     {event.tags.slice(0, 3).map((tag) => (
                         <span
                             key={tag}
-                            style={{
-                                background: "#F0F2F5",
-                                color: "#65676B",
-                                borderRadius: 5,
-                                padding: "2px 8px",
-                                fontFamily: "'Inter', sans-serif",
-                                fontSize: 11,
-                                fontWeight: 500,
-                            }}
+                            className="rounded-[5px] bg-(--cit-bg) px-2 py-0.5 text-[11px] font-medium text-(--cit-text-muted)"
                         >
                             {tag}
                         </span>
@@ -573,28 +415,10 @@ function EventCard({ event }: { event: (typeof ALL_EVENTS)[0] }) {
 
                 {/* Participants progress */}
                 <div>
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginBottom: 5,
-                        }}
-                    >
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 5,
-                            }}
-                        >
+                    <div className="mb-1.5 flex justify-between gap-2">
+                        <div className="flex items-center gap-1.5">
                             <Users size={12} color="#65676B" />
-                            <span
-                                style={{
-                                    fontFamily: "'Inter', sans-serif",
-                                    fontSize: 12,
-                                    color: "#65676B",
-                                }}
-                            >
+                            <span className="text-xs text-(--cit-text-muted)">
                                 {event.participants.toLocaleString()} /{" "}
                                 {event.maxParticipants.toLocaleString()}
                             </span>
@@ -1304,36 +1128,14 @@ export function EventsPage() {
                 description="Browse upcoming CIT events, workshops, hackathons, and cultural competitions with filters for category, mode, department, and date."
                 canonical="/events"
             />
-            <div style={{ minHeight: "100vh", background: "#F0F2F5" }}>
+            <div className="min-h-screen bg-(--cit-bg)">
                 {/* Page header */}
-                <div
-                    style={{
-                        background:
-                            "linear-gradient(135deg, #1877F2 0%, #0c5fcc 100%)",
-                        padding: "40px 24px 44px",
-                    }}
-                >
-                    <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-                        <h1
-                            style={{
-                                fontFamily: "'Inter', sans-serif",
-                                fontWeight: 800,
-                                fontSize: "clamp(26px, 3.5vw, 40px)",
-                                color: "#ffffff",
-                                margin: "0 0 10px",
-                                letterSpacing: -0.5,
-                            }}
-                        >
+                <div className="bg-linear-to-r from-(--cit-primary) to-[#0c5fcc] px-6 py-10 pb-11">
+                    <div className="mx-auto max-w-300">
+                        <h1 className="mb-2.5 text-[clamp(26px,3.5vw,40px)] font-extrabold tracking-[-0.5px] text-white">
                             Browse Events
                         </h1>
-                        <p
-                            style={{
-                                fontFamily: "'Inter', sans-serif",
-                                fontSize: 16,
-                                color: "rgba(255,255,255,0.85)",
-                                margin: 0,
-                            }}
-                        >
+                        <p className="m-0 text-base text-white/85">
                             Find competitions, workshops, and cultural events
                             happening at CIT.
                         </p>
@@ -1341,66 +1143,20 @@ export function EventsPage() {
                 </div>
 
                 {/* Negative margin card pull-up */}
-                <div
-                    style={{
-                        maxWidth: 1200,
-                        margin: "-24px auto 0",
-                        padding: "0 24px 60px",
-                    }}
-                >
+                <div className="mx-auto -mt-6 max-w-300 px-6 pb-15">
                     {/* Toolbar */}
-                    <div
-                        style={{
-                            background: "#fff",
-                            borderRadius: 12,
-                            border: "1px solid #DADDE1",
-                            padding: "14px 20px",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            marginBottom: 20,
-                            boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
-                            gap: 12,
-                            flexWrap: "wrap",
-                        }}
-                    >
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 8,
-                            }}
-                        >
-                            <Tag size={15} color="#1877F2" />
-                            <span
-                                style={{
-                                    fontFamily: "'Inter', sans-serif",
-                                    fontWeight: 700,
-                                    fontSize: 15,
-                                    color: "#1C1E21",
-                                }}
-                            >
+                    <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-5 py-3.5 shadow-(--cit-shadow-sm)">
+                        <div className="flex items-center gap-2">
+                            <Tag size={15} color="var(--cit-primary)" />
+                            <span className="text-[15px] font-bold text-(--cit-text)">
                                 {filtered.length} Events
                             </span>
                             {filters.category !== "All" && (
-                                <span
-                                    style={{
-                                        background: "#E7F3FF",
-                                        color: "#1877F2",
-                                        borderRadius: 6,
-                                        padding: "2px 10px",
-                                        fontFamily: "'Inter', sans-serif",
-                                        fontWeight: 600,
-                                        fontSize: 12,
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 5,
-                                    }}
-                                >
+                                <span className="flex items-center gap-1 rounded-(--cit-radius-sm) bg-(--cit-primary-soft) px-2.5 py-0.5 text-xs font-semibold text-(--cit-primary)">
                                     {filters.category}
                                     <X
                                         size={12}
-                                        style={{ cursor: "pointer" }}
+                                        className="cursor-pointer"
                                         onClick={() =>
                                             handleSetFilters((f) => ({
                                                 ...f,
@@ -1412,73 +1168,29 @@ export function EventsPage() {
                             )}
                         </div>
 
-                        <div
-                            style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 12,
-                            }}
-                        >
+                        <div className="flex items-center gap-3">
                             {/* Mobile filter toggle */}
                             <button
                                 onClick={() =>
                                     setMobilePanelOpen(!mobilePanelOpen)
                                 }
-                                style={{
-                                    display: "none",
-                                    alignItems: "center",
-                                    gap: 6,
-                                    padding: "8px 14px",
-                                    borderRadius: 8,
-                                    border: "1.5px solid #DADDE1",
-                                    background: "#fff",
-                                    fontFamily: "'Inter', sans-serif",
-                                    fontWeight: 600,
-                                    fontSize: 13,
-                                    color: "#1C1E21",
-                                    cursor: "pointer",
-                                }}
-                                className="mobile-filter-btn"
+                                className="mobile-filter-btn hidden items-center gap-1.5 rounded-(--cit-radius-sm) border border-(--cit-border) bg-(--cit-surface) px-3.5 py-2 text-[13px] font-semibold text-(--cit-text)"
                             >
                                 <Filter size={14} /> Filters
                             </button>
 
                             {/* Sort */}
-                            <div
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 8,
-                                }}
-                            >
-                                <span
-                                    style={{
-                                        fontFamily: "'Inter', sans-serif",
-                                        fontSize: 13,
-                                        color: "#65676B",
-                                    }}
-                                >
+                            <div className="flex items-center gap-2">
+                                <span className="text-[13px] text-(--cit-text-muted)">
                                     Sort by:
                                 </span>
-                                <div style={{ position: "relative" }}>
+                                <div className="relative">
                                     <select
                                         value={sort}
                                         onChange={(e) =>
                                             setSort(e.target.value)
                                         }
-                                        style={{
-                                            padding: "8px 32px 8px 12px",
-                                            borderRadius: 8,
-                                            border: "1.5px solid #DADDE1",
-                                            background: "#fff",
-                                            fontFamily: "'Inter', sans-serif",
-                                            fontWeight: 600,
-                                            fontSize: 13,
-                                            color: "#1C1E21",
-                                            outline: "none",
-                                            cursor: "pointer",
-                                            appearance: "none",
-                                        }}
+                                        className="cursor-pointer appearance-none rounded-(--cit-radius-sm) border border-(--cit-border) bg-(--cit-surface) py-2 pl-3 pr-8 text-[13px] font-semibold text-(--cit-text) outline-none"
                                     >
                                         <option>Featured</option>
                                         <option>Participants</option>
@@ -1486,14 +1198,8 @@ export function EventsPage() {
                                     </select>
                                     <ChevronDown
                                         size={14}
-                                        color="#65676B"
-                                        style={{
-                                            position: "absolute",
-                                            right: 10,
-                                            top: "50%",
-                                            transform: "translateY(-50%)",
-                                            pointerEvents: "none",
-                                        }}
+                                        color="var(--cit-text-muted)"
+                                        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
                                     />
                                 </div>
                             </div>
@@ -1502,10 +1208,7 @@ export function EventsPage() {
 
                     {/* Mobile filter slide-down */}
                     {mobilePanelOpen && (
-                        <div
-                            style={{ marginBottom: 20 }}
-                            className="mobile-filter-panel"
-                        >
+                        <div className="mobile-filter-panel mb-5">
                             <FilterPanel
                                 filters={filters}
                                 setFilters={handleSetFilters}
@@ -1516,15 +1219,7 @@ export function EventsPage() {
                     )}
 
                     {/* Layout: sidebar + grid */}
-                    <div
-                        style={{
-                            display: "grid",
-                            gridTemplateColumns: "260px 1fr",
-                            gap: 20,
-                            alignItems: "start",
-                        }}
-                        className="events-layout"
-                    >
+                    <div className="events-layout grid grid-cols-[260px_1fr] items-start gap-5">
                         {/* Sidebar */}
                         <div
                             className="sidebar-col"
@@ -1545,57 +1240,19 @@ export function EventsPage() {
                         {/* Grid */}
                         <div>
                             {pageEvents.length === 0 ? (
-                                <div
-                                    style={{
-                                        background: "#fff",
-                                        borderRadius: 16,
-                                        border: "1px solid #DADDE1",
-                                        padding: "80px 24px",
-                                        textAlign: "center",
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            fontSize: 48,
-                                            marginBottom: 16,
-                                        }}
-                                    >
-                                        🔍
-                                    </div>
-                                    <p
-                                        style={{
-                                            fontFamily: "'Inter', sans-serif",
-                                            fontWeight: 700,
-                                            fontSize: 18,
-                                            color: "#1C1E21",
-                                            margin: "0 0 8px",
-                                        }}
-                                    >
+                                <div className="rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) px-6 py-20 text-center">
+                                    <div className="mb-4 text-5xl">🔍</div>
+                                    <p className="mb-2 text-lg font-bold text-(--cit-text)">
                                         No events found
                                     </p>
-                                    <p
-                                        style={{
-                                            fontFamily: "'Inter', sans-serif",
-                                            fontSize: 14,
-                                            color: "#65676B",
-                                            margin: 0,
-                                        }}
-                                    >
+                                    <p className="m-0 text-sm text-(--cit-text-muted)">
                                         Try adjusting your filters or search
                                         query.
                                     </p>
                                 </div>
                             ) : (
                                 <>
-                                    <div
-                                        style={{
-                                            display: "grid",
-                                            gridTemplateColumns:
-                                                "repeat(3, 1fr)",
-                                            gap: 18,
-                                        }}
-                                        className="event-cards-grid"
-                                    >
+                                    <div className="event-cards-grid grid grid-cols-3 gap-4.5">
                                         {pageEvents.map((event) => (
                                             <EventCard
                                                 key={event.id}
