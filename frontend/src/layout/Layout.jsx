@@ -2,17 +2,9 @@ import Header from "../components/Header";
 
 const Layout = ({ children }) => {
     return (
-        <div>
+        <div className="min-h-screen bg-(--cit-bg) text-(--cit-text)">
             <Header />
-            <div
-                style={{
-                    fontFamily: "'Inter', sans-serif",
-                    minHeight: "100vh",
-                    background: "#F0F2F5",
-                }}
-            >
-                {children}
-            </div>
+            <main className="min-h-screen font-sans">{children}</main>
         </div>
     );
 };
