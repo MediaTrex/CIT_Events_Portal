@@ -78,7 +78,10 @@ const timelineEvents = [
 
 export function UpcomingTimeline() {
     return (
-        <section style={{ background: "#F0F2F5", padding: "72px 24px" }}>
+        <section
+            style={{ background: "#F0F2F5", padding: "72px 24px" }}
+            className="timeline-section"
+        >
             <div style={{ maxWidth: 1200, margin: "0 auto" }}>
                 <div style={{ textAlign: "center", marginBottom: 48 }}>
                     <span
@@ -132,7 +135,10 @@ export function UpcomingTimeline() {
                     <div />
 
                     {/* Right timeline */}
-                    <div style={{ position: "relative" }}>
+                    <div
+                        style={{ position: "relative", minWidth: 0 }}
+                        className="timeline-track"
+                    >
                         {/* vertical line */}
                         <div
                             style={{
@@ -152,6 +158,7 @@ export function UpcomingTimeline() {
                                 display: "flex",
                                 flexDirection: "column",
                                 gap: 0,
+                                minWidth: 0,
                             }}
                         >
                             {timelineEvents.map((event, idx) => (
@@ -164,7 +171,9 @@ export function UpcomingTimeline() {
                                             idx < timelineEvents.length - 1
                                                 ? 24
                                                 : 0,
+                                        minWidth: 0,
                                     }}
+                                    className="timeline-item"
                                 >
                                     {/* Date column */}
                                     <div
@@ -174,7 +183,9 @@ export function UpcomingTimeline() {
                                             paddingRight: 24,
                                             textAlign: "right",
                                             paddingTop: 18,
+                                            minWidth: 0,
                                         }}
+                                        className="timeline-date"
                                     >
                                         <p
                                             style={{
@@ -209,6 +220,7 @@ export function UpcomingTimeline() {
                                             position: "relative",
                                             flexShrink: 0,
                                         }}
+                                        className="timeline-dot-wrap"
                                     >
                                         <div
                                             style={{
@@ -232,6 +244,7 @@ export function UpcomingTimeline() {
                                     <div
                                         style={{
                                             flex: 1,
+                                            minWidth: 0,
                                             marginLeft: 28,
                                             background: "#ffffff",
                                             borderRadius: 14,
@@ -243,6 +256,7 @@ export function UpcomingTimeline() {
                                                 "transform 0.15s ease, box-shadow 0.15s ease",
                                             cursor: "pointer",
                                         }}
+                                        className="timeline-card"
                                         onMouseEnter={(e) => {
                                             (
                                                 e.currentTarget as HTMLElement
@@ -271,6 +285,7 @@ export function UpcomingTimeline() {
                                                 gap: 12,
                                                 flexWrap: "wrap",
                                             }}
+                                            className="timeline-card-top"
                                         >
                                             <div style={{ flex: 1 }}>
                                                 <div
@@ -279,7 +294,9 @@ export function UpcomingTimeline() {
                                                         alignItems: "center",
                                                         gap: 10,
                                                         marginBottom: 8,
+                                                        flexWrap: "wrap",
                                                     }}
+                                                    className="timeline-badges"
                                                 >
                                                     <span
                                                         style={{
@@ -326,6 +343,7 @@ export function UpcomingTimeline() {
                                                         color: "#1C1E21",
                                                         margin: "0 0 8px",
                                                     }}
+                                                    className="timeline-card-title"
                                                 >
                                                     {event.title}
                                                 </p>
@@ -335,6 +353,7 @@ export function UpcomingTimeline() {
                                                         gap: 18,
                                                         flexWrap: "wrap",
                                                     }}
+                                                    className="timeline-meta"
                                                 >
                                                     <div
                                                         style={{
@@ -401,6 +420,7 @@ export function UpcomingTimeline() {
                                                     transition:
                                                         "all 0.15s ease",
                                                 }}
+                                                className="timeline-register"
                                                 onMouseEnter={(e) => {
                                                     (
                                                         e.currentTarget as HTMLElement
@@ -432,7 +452,26 @@ export function UpcomingTimeline() {
             </div>
             <style>{`
         @media (max-width: 768px) {
+          .timeline-section { padding: 56px 16px !important; }
           .timeline-container { grid-template-columns: 1fr !important; }
+          .timeline-track { min-width: 0; }
+          .timeline-item { min-width: 0; }
+          .timeline-date { width: 74px !important; padding-right: 12px !important; }
+          .timeline-card { margin-left: 14px !important; padding: 14px 14px !important; }
+          .timeline-card-top { flex-direction: column; align-items: flex-start; }
+          .timeline-badges { gap: 8px; }
+          .timeline-meta { flex-direction: column; gap: 8px !important; }
+          .timeline-register { width: 100%; margin-top: 8px; }
+        }
+
+        @media (max-width: 480px) {
+          .timeline-section { padding: 48px 12px !important; }
+          .timeline-date { width: 64px !important; }
+          .timeline-date p:first-child { font-size: 17px !important; }
+          .timeline-date p:last-child { font-size: 11px !important; }
+          .timeline-card { margin-left: 10px !important; padding: 12px; }
+          .timeline-card-title { font-size: 15px !important; }
+          .timeline-meta span { font-size: 12px !important; }
         }
       `}</style>
         </section>

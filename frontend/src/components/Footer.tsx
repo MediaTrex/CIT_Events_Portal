@@ -98,8 +98,9 @@ export function Footer() {
                                 fontSize: 15,
                                 color: "#1C1E21",
                                 outline: "none",
-                                minWidth: 280,
+                                
                             }}
+                            className="flex-1 max-xs:py-2! max-xs:px-4! max-xs:text-sm!"
                         />
                         <button
                             style={{
@@ -116,6 +117,7 @@ export function Footer() {
                                 gap: 8,
                                 transition: "background 0.15s ease",
                             }}
+                            className="flex-1/3 max-xs:py-2! max-xs:px-2! max-xs:text-sm!"
                             onMouseEnter={(e) => {
                                 (
                                     e.currentTarget as HTMLElement
