@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { ArrowRight, Eye, EyeOff, Mail, ShieldCheck, Zap } from "lucide-react";
 import { SiFacebook, SiGithub } from "react-icons/si";
-import { Link } from "react-router-dom";
 import AuthCarousel from "../components/AuthCarousel";
 import MetaData from "../components/MetaData";
 import { DecorativeCircles } from "../components/DecorativeCircles";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const {
         register,
         handleSubmit,
+        getValues,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -20,12 +22,29 @@ export default function Login() {
             rememberMe: false,
         },
     });
+    const { setUser } = useAuthContext();
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    const onSubmit = () => {};
+    const onSubmit = () => {
+        const formData = {
+            email: getValues("email"),
+            password: getValues("password"),
+        };
+
+        // TODO: replace with real auth API later.
+        setUser({
+            email: formData.email,
+            role: "student",
+        });
+
+        const redirectTo = location.state?.from || "/";
+        navigate(redirectTo, { replace: true });
+    };
 
     return (
         <main className="relative min-h-screen overflow-hidden bg-linear-to-br from-(--cit-primary) via-[#0c5fcc] to-[#1a3a6b] text-white">
-            <DecorativeCircles/>
+            <DecorativeCircles />
             <MetaData
                 title="Login"
                 description="Login to the CIT Events Portal to register, track events, and manage your participation."
