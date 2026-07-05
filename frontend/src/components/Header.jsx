@@ -1,6 +1,6 @@
 import { Menu, X, Zap } from "lucide-react";
 import { useState } from "react";
-import { Link, useLocation, useNavigation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -208,82 +208,81 @@ export default function Header() {
                 </div>
 
                 {/* Mobile drawer */}
-                {mobileOpen && (
-                    <div
-                        style={{
-                            borderTop: "1px solid #DADDE1",
-                            paddingBottom: 16,
-                        }}
-                        className="nav-mobile-menu"
-                    >
-                        {navLinks.map((link) => {
-                            const isActive = location.pathname.startsWith(
-                                link.page,
-                            );
-                            return (
-                                <button
-                                    key={link.label}
-                                    onClick={() => {
-                                        if (link.page) {
-                                            setActivePage(link.page);
-                                            setMobileOpen(false);
-                                        }
-                                    }}
-                                    style={{
-                                        display: "block",
-                                        width: "100%",
-                                        textAlign: "left",
-                                        padding: "12px 8px",
-                                        background: "none",
-                                        border: "none",
-                                        borderBottom: "1px solid #F0F2F5",
-                                        color: isActive ? "#1877F2" : "#1C1E21",
-                                        fontFamily: "'Inter', sans-serif",
-                                        fontWeight: isActive ? 700 : 500,
-                                        fontSize: 15,
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    {link.label}
-                                </button>
-                            );
-                        })}
-                        <div
-                            style={{ display: "flex", gap: 10, marginTop: 12 }}
-                        >
+                <div
+                    style={{
+                        borderTop: "1px solid #DADDE1",
+                        paddingBottom: mobileOpen ? 16 : 0,
+                        maxHeight: mobileOpen ? 320 : 0,
+                        opacity: mobileOpen ? 1 : 0,
+                        overflow: "hidden",
+                        transition:
+                            "max-height 0.3s ease, opacity 0.25s ease, padding-bottom 0.3s ease",
+                        pointerEvents: mobileOpen ? "auto" : "none",
+                    }}
+                    className="nav-mobile-menu"
+                >
+                    {navLinks.map((link) => {
+                        const isActive = location.pathname === link.page;
+                        return (
                             <button
-                                style={{
-                                    flex: 1,
-                                    padding: "10px 0",
-                                    borderRadius: 8,
-                                    border: "1.5px solid #1877F2",
-                                    background: "transparent",
-                                    color: "#1877F2",
-                                    fontFamily: "'Inter', sans-serif",
-                                    fontWeight: 600,
-                                    cursor: "pointer",
+                                key={link.label}
+                                onClick={() => {
+                                    if (link.page) {
+                                        setMobileOpen(false);
+                                    }
                                 }}
-                            >
-                                Log In
-                            </button>
-                            <button
                                 style={{
-                                    flex: 1,
-                                    padding: "10px 0",
-                                    borderRadius: 8,
+                                    display: "block",
+                                    width: "100%",
+                                    textAlign: "left",
+                                    padding: "12px 8px",
+                                    background: "none",
                                     border: "none",
-                                    background: "#1877F2",
-                                    color: "#fff",
+                                    borderBottom: "1px solid #F0F2F5",
+                                    color: isActive ? "#1877F2" : "#1C1E21",
                                     fontFamily: "'Inter', sans-serif",
-                                    fontWeight: 600,
+                                    fontWeight: isActive ? 700 : 500,
+                                    fontSize: 15,
                                     cursor: "pointer",
                                 }}
                             >
-                                Register
+                                {link.label}
                             </button>
-                        </div>
+                        );
+                    })}
+                    <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+                        <button
+                            style={{
+                                flex: 1,
+                                padding: "10px 0",
+                                borderRadius: 8,
+                                border: "1.5px solid #1877F2",
+                                background: "transparent",
+                                color: "#1877F2",
+                                fontFamily: "'Inter', sans-serif",
+                                fontWeight: 600,
+                                cursor: "pointer",
+                            }}
+                        >
+                            Log In
+                        </button>
+                        <button
+                            style={{
+                                flex: 1,
+                                padding: "10px 0",
+                                borderRadius: 8,
+                                border: "none",
+                                background: "#1877F2",
+                                color: "#fff",
+                                fontFamily: "'Inter', sans-serif",
+                                fontWeight: 600,
+                                cursor: "pointer",
+                            }}
+                        >
+                            Register
+                        </button>
                     </div>
-                )}
+                </div>
             </div>
 
             <style>{`
@@ -291,7 +290,7 @@ export default function Header() {
           .nav-desktop { display: none !important; }
           .nav-mobile-btn { display: flex !important; }
         }
-        .nav-mobile-menu { display: block;  }
+        .nav-mobile-menu { display: block; }
       `}</style>
         </nav>
     );
