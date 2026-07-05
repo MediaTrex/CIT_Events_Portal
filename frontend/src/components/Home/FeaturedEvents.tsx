@@ -93,7 +93,7 @@ export const categoryStyle = {
         bg: "#FEF9E7",
     },
     sports: {
-         color: "#1877Ff",
+        color: "#1877Ff",
         bg: "#E7F3FF",
     },
     "non-technical": {
