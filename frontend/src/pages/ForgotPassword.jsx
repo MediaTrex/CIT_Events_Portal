@@ -286,7 +286,7 @@ export default function ForgotPassword() {
 
                                 {currentStep === 2 ? (
                                     <>
-                                        <div className="rounded-(--cit-radius-lg) border border-(--cit-border) bg-white px-4 py-3">
+                                        <div className="w-full overflow-hidden rounded-(--cit-radius-lg) border border-(--cit-border) bg-white px-4 py-3">
                                             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--cit-text-muted)">
                                                 Verification email
                                             </p>
@@ -299,7 +299,7 @@ export default function ForgotPassword() {
                                             <span className="text-sm font-semibold text-(--cit-text)">
                                                 OTP code
                                             </span>
-                                            <div className="flex gap-2 justify-between">
+                                            <div className="flex w-full gap-1.5 sm:gap-2 justify-between">
                                                 {Array.from({ length: 6 }).map((_, i) => (
                                                     <input
                                                         key={i}
@@ -311,7 +311,7 @@ export default function ForgotPassword() {
                                                         onChange={(e) => handleOtpChange(i, e)}
                                                         onKeyDown={(e) => handleOtpKeyDown(i, e)}
                                                         onPaste={handleOtpPaste}
-                                                        className={`w-12 h-14 text-center text-xl font-bold rounded-(--cit-radius-md) border ${errors.otp ? "border-red-300 bg-red-50 text-red-900 focus:border-red-400 focus:ring-red-200" : "border-(--cit-border) bg-white text-(--cit-text) focus:border-(--cit-primary) focus:ring-(--cit-primary-soft)"} outline-none transition-colors focus:ring-2`}
+                                                        className={`w-full min-w-0 flex-1 px-1 h-12 sm:h-14 text-center text-lg sm:text-xl font-bold rounded-(--cit-radius-md) border ${errors.otp ? "border-red-300 bg-red-50 text-red-900 focus:border-red-400 focus:ring-red-200" : "border-(--cit-border) bg-white text-(--cit-text) focus:border-(--cit-primary) focus:ring-(--cit-primary-soft)"} outline-none transition-colors focus:ring-2`}
                                                     />
                                                 ))}
                                             </div>
