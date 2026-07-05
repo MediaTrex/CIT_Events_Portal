@@ -88,6 +88,7 @@ export default function ForgotPassword() {
         getValues,
         setValue,
         watch,
+        clearErrors,
         formState: { errors },
     } = useForm({
         defaultValues: {
@@ -126,7 +127,11 @@ export default function ForgotPassword() {
         const char = value.slice(-1);
         currentOtp[index] = char;
         const newOtp = currentOtp.join("").slice(0, 6);
-        setValue("otp", newOtp, { shouldValidate: true });
+        setValue("otp", newOtp, { shouldValidate: newOtp.length === 6 });
+        
+        if (errors.otp && newOtp.length < 6) {
+            clearErrors("otp");
+        }
 
         if (char && index < 5) {
             otpRefs.current[index + 1]?.focus();
@@ -143,7 +148,10 @@ export default function ForgotPassword() {
         e.preventDefault();
         const pastedData = e.clipboardData.getData("text").replace(/[^0-9]/g, "").slice(0, 6);
         if (pastedData) {
-            setValue("otp", pastedData, { shouldValidate: true });
+            setValue("otp", pastedData, { shouldValidate: pastedData.length === 6 });
+            if (errors.otp && pastedData.length < 6) {
+                clearErrors("otp");
+            }
             const nextIndex = Math.min(pastedData.length, 5);
             otpRefs.current[nextIndex]?.focus();
         }
@@ -229,7 +237,14 @@ export default function ForgotPassword() {
 
                             <form
                                 className="space-y-4"
-                                onSubmit={handleSubmit(onSubmit)}
+                                onSubmit={(e) => {
+                                    if (currentStep < steps.length) {
+                                        e.preventDefault();
+                                        moveToNextStep();
+                                    } else {
+                                        handleSubmit(onSubmit)(e);
+                                    }
+                                }}
                             >
                                 {currentStep === 1 ? (
                                     <label className="block space-y-1">
@@ -419,6 +434,7 @@ export default function ForgotPassword() {
 
                                     {currentStep < steps.length ? (
                                         <button
+                                            key="next-btn"
                                             type="button"
                                             onClick={moveToNextStep}
                                             className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-(--cit-radius-md) bg-(--cit-primary) px-4 py-3 text-sm font-bold text-white shadow-(--cit-shadow-sm) transition-all duration-150 hover:-translate-y-0.5 hover:bg-(--cit-primary-hover) hover:shadow-(--cit-shadow-md)"
@@ -430,6 +446,7 @@ export default function ForgotPassword() {
                                         </button>
                                     ) : (
                                         <button
+                                            key="submit-btn"
                                             type="submit"
                                             className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-(--cit-radius-md) bg-(--cit-primary) px-4 py-3 text-sm font-bold text-white shadow-(--cit-shadow-sm) transition-all duration-150 hover:-translate-y-0.5 hover:bg-(--cit-primary-hover) hover:shadow-(--cit-shadow-md)"
                                         >
