@@ -1,5 +1,5 @@
 import { ArrowRight, Play } from "lucide-react";
-import { DecorativeCircles } from "./DecorativeCircles";
+import { DecorativeCircles } from "../DecorativeCircles";
 
 export function HeroSection() {
     return (
