@@ -280,7 +280,13 @@ export default function Header() {
                                         }}
                                     >
                                         <Link
-                                            to="/profile"
+                                            to={
+                                                user?.role === "admin"
+                                                    ? "/admin/dashboard"
+                                                    : user?.role === "organizer"
+                                                      ? "/organizer/profile"
+                                                      : "/student/profile"
+                                            }
                                             onClick={() =>
                                                 setProfileOpen(false)
                                             }
@@ -299,7 +305,13 @@ export default function Header() {
                                             Profile
                                         </Link>
                                         <Link
-                                            to="/dashboard"
+                                            to={
+                                                user?.role === "admin"
+                                                    ? "/admin/dashboard"
+                                                    : user?.role === "organizer"
+                                                      ? "/organizer/dashboard"
+                                                      : "/student/dashboard"
+                                            }
                                             onClick={() =>
                                                 setProfileOpen(false)
                                             }
@@ -530,7 +542,13 @@ export default function Header() {
                                     }}
                                 >
                                     <Link
-                                        to="/profile"
+                                        to={
+                                            user?.role === "admin"
+                                                ? "/admin/dashboard"
+                                                : user?.role === "organizer"
+                                                  ? "/organizer/profile"
+                                                  : "/student/profile"
+                                        }
                                         onClick={() => setMobileOpen(false)}
                                         style={{
                                             padding: "10px 12px",
@@ -546,7 +564,13 @@ export default function Header() {
                                         Profile
                                     </Link>
                                     <Link
-                                        to="/dashboard"
+                                        to={
+                                            user?.role === "admin"
+                                                ? "/admin/dashboard"
+                                                : user?.role === "organizer"
+                                                  ? "/organizer/dashboard"
+                                                  : "/student/dashboard"
+                                        }
                                         onClick={() => setMobileOpen(false)}
                                         style={{
                                             padding: "10px 12px",
