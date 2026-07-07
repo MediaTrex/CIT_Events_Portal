@@ -117,23 +117,7 @@ export default function DashboardLayout({ role }) {
             <header className="sticky top-0 z-40 bg-(--cit-surface) border-b border-(--cit-border) shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
                 <div className="mx-auto max-w-300 w-full px-2 py-4">
                     <div className="flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                            <Link
-                                to={"/"}
-                                className="flex items-center gap-3 text-(--cit-text)"
-                            >
-                                <div className="grid h-10 w-10 place-items-center rounded-xl bg-linear-to-br from-(--cit-primary) to-[#0c5fcc] text-white shadow-[0_8px_16px_rgba(24,119,242,0.22)]">
-                                    <Zap size={18} />
-                                </div>
-                                <div className="hidden md:block">
-                                    <p className="text-base font-extrabold tracking-[-0.02em] text-(--cit-text)">
-                                        CIT{" "}
-                                        <span className="text-(--cit-primary)">
-                                            Event Hub
-                                        </span>
-                                    </p>
-                                </div>
-                            </Link>
+                        <div className="flex items-center gap-1">
                             <button
                                 type="button"
                                 className="inline-flex h-10 w-10 items-center justify-center rounded-[14px] border border-(--cit-border) bg-(--cit-surface) text-(--cit-text) md:hidden"
@@ -142,12 +126,27 @@ export default function DashboardLayout({ role }) {
                             >
                                 <Menu size={20} />
                             </button>
+                            <Link
+                                to={"/"}
+                                className="flex items-center gap-3 text-(--cit-text)"
+                            >
+                                <div className="grid h-10 w-10 place-items-center rounded-xl bg-linear-to-br from-(--cit-primary) to-[#0c5fcc] text-white shadow-[0_8px_16px_rgba(24,119,242,0.22)]">
+                                    <Zap size={18} />
+                                </div>
+                                <div className="block">
+                                    <p className="text-base font-extrabold tracking-[-0.02em] text-(--cit-text)">
+                                        CIT{" "}
+                                        <span className="text-(--cit-primary)">
+                                            Event Hub
+                                        </span>
+                                    </p>
+                                </div>
+                            </Link>
                         </div>
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setProfileOpen((prev) => !prev)}
                                 style={{
-                                    
                                     alignItems: "center",
                                     gap: 10,
                                     background: "#F7F9FC",
