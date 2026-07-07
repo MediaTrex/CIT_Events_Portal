@@ -1,7 +1,33 @@
 import { useEffect, useRef, useState } from "react";
-import { Camera, Save, X } from "lucide-react";
+import {
+    AlertCircle,
+    Building2,
+    Camera,
+    CheckCircle2,
+    Mail,
+    Phone,
+    Save,
+    UserRound,
+    X,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useAuthContext } from "../../context/AuthContext";
+
+const departments = [
+    "Artificial Intelligence and Data Science",
+    "Artificial Intelligence and Machine Learning",
+    "Computer Science and Engineering",
+    "Information Technology",
+    "Electronics and Communication Engineering",
+    "Electrical and Electronics Engineering",
+    "Mechanical Engineering",
+    "Civil Engineering",
+    "Automobile Engineering",
+    "Biomedical Engineering",
+    "Mechatronics Engineering",
+    "Cyber Security",
+    "Computer Science with Business Systems",
+];
 
 export default function StudentProfile() {
     const { user, setUser } = useAuthContext();
@@ -18,19 +44,24 @@ export default function StudentProfile() {
         defaultValues: {
             name: user?.name || "",
             email: user?.email || "",
+            phone: user?.phone || "",
+            department: user?.department || "",
         },
     });
+
+    const isProfileComplete = Boolean(user?.profileSetupCompleted);
 
     useEffect(() => {
         reset({
             name: user?.name || "",
             email: user?.email || "",
+            phone: user?.phone || "",
+            department: user?.department || "",
         });
         setAvatarPreview(user?.avatar || null);
     }, [user, reset]);
 
     const displayName = user?.name || user?.email?.split("@")[0] || "Student";
-    const roleLabel = user?.role?.toUpperCase() || "STUDENT";
     const initials = displayName
         .split(" ")
         .slice(0, 2)
@@ -51,6 +82,8 @@ export default function StudentProfile() {
         reset({
             name: user?.name || "",
             email: user?.email || "",
+            phone: user?.phone || "",
+            department: user?.department || "",
         });
         setAvatarPreview(user?.avatar || null);
         setIsEditing(false);
@@ -61,6 +94,7 @@ export default function StudentProfile() {
             ...currentUser,
             ...data,
             avatar: avatarPreview || currentUser?.avatar || null,
+            profileSetupCompleted: true,
         }));
         setIsEditing(false);
     };
@@ -68,8 +102,37 @@ export default function StudentProfile() {
     return (
         <main className="min-h-screen bg-(--cit-bg) px-6 py-8 md:px-8 lg:px-10">
             <div className="mx-auto flex max-w-300 flex-col gap-6">
+                {!isProfileComplete && (
+                    <div className="rounded-(--cit-radius-xl) border border-amber-200 bg-amber-50 p-5 shadow-(--cit-shadow-sm)">
+                        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                            <div className="flex items-start gap-3">
+                                <div className="mt-0.5 rounded-full bg-amber-100 p-2 text-amber-600">
+                                    <AlertCircle size={18} />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-semibold text-amber-800">
+                                        Complete your profile setup
+                                    </p>
+                                    <p className="mt-1 text-sm text-amber-700">
+                                        Add your phone number and department so
+                                        your profile is ready for campus events
+                                        and team activities.
+                                    </p>
+                                </div>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setIsEditing(true)}
+                                className="inline-flex items-center justify-center rounded-(--cit-radius-md) bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600"
+                            >
+                                Update Profile
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 <section className="overflow-hidden rounded-(--cit-radius-xl) border border-(--cit-border) bg-(--cit-surface) shadow-(--cit-shadow-sm)">
-                    <div className="bg-linear-to-r from-(--cit-primary) to-[#0c5fcc] px-6 py-8 text-white md:px-8">
+                    <div className="bg-linear-to-r from-[#0f172a] via-(--cit-primary) to-[#7c3aed] px-6 py-8 text-white md:px-8">
                         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                             <div className="flex items-center gap-4">
                                 <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full border-4 border-white/80 bg-white/20 text-2xl font-extrabold shadow-(--cit-shadow-md)">
@@ -84,9 +147,18 @@ export default function StudentProfile() {
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/80">
-                                        Student Profile
-                                    </p>
+                                    <div className="flex items-center gap-2">
+                                        <p className="text-sm font-semibold uppercase tracking-[0.24em] text-white/80">
+                                            Student Profile
+                                        </p>
+                                        <span
+                                            className={`rounded-full px-2.5 py-1 text-[11px] font-semibold ${isProfileComplete ? "bg-emerald-500/20 text-emerald-100" : "bg-amber-400/20 text-amber-100"}`}
+                                        >
+                                            {isProfileComplete
+                                                ? "Profile ready"
+                                                : "Setup pending"}
+                                        </span>
+                                    </div>
                                     <h1 className="mt-2 text-3xl font-extrabold tracking-tight">
                                         {displayName}
                                     </h1>
@@ -101,7 +173,7 @@ export default function StudentProfile() {
                                 onClick={() => setIsEditing((prev) => !prev)}
                                 className="inline-flex items-center justify-center rounded-(--cit-radius-md) border border-white/30 bg-white/15 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/25"
                             >
-                                {isEditing ? "Cancel" : "Edit Profile"}
+                                {isEditing ? "Cancel" : "Update Profile"}
                             </button>
                         </div>
                     </div>
@@ -110,37 +182,60 @@ export default function StudentProfile() {
                         {!isEditing ? (
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface-subtle) p-4">
-                                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--cit-text-muted)">
-                                        Full Name
-                                    </p>
+                                    <div className="flex items-center gap-2 text-(--cit-text-muted)">
+                                        <UserRound size={16} />
+                                        <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                                            Full Name
+                                        </p>
+                                    </div>
                                     <p className="mt-2 text-base font-semibold text-(--cit-text)">
                                         {user?.name || "Not provided"}
                                     </p>
                                 </div>
                                 <div className="rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface-subtle) p-4">
-                                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--cit-text-muted)">
-                                        Email
-                                    </p>
+                                    <div className="flex items-center gap-2 text-(--cit-text-muted)">
+                                        <Mail size={16} />
+                                        <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                                            Email
+                                        </p>
+                                    </div>
                                     <p className="mt-2 text-base font-semibold text-(--cit-text)">
                                         {user?.email || "Not provided"}
                                     </p>
                                 </div>
                                 <div className="rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface-subtle) p-4">
-                                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--cit-text-muted)">
-                                        Role
-                                    </p>
-                                    <p className="mt-2 text-base font-semibold capitalize text-(--cit-text)">
-                                        {user?.role || "student"}
+                                    <div className="flex items-center gap-2 text-(--cit-text-muted)">
+                                        <Phone size={16} />
+                                        <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                                            Phone Number
+                                        </p>
+                                    </div>
+                                    <p className="mt-2 text-base font-semibold text-(--cit-text)">
+                                        {user?.phone || "Not provided"}
                                     </p>
                                 </div>
                                 <div className="rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface-subtle) p-4">
-                                    <p className="text-xs font-semibold uppercase tracking-[0.2em] text-(--cit-text-muted)">
-                                        Avatar
-                                    </p>
+                                    <div className="flex items-center gap-2 text-(--cit-text-muted)">
+                                        <Building2 size={16} />
+                                        <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                                            Department
+                                        </p>
+                                    </div>
                                     <p className="mt-2 text-base font-semibold text-(--cit-text)">
-                                        {avatarPreview
-                                            ? "Custom profile photo"
-                                            : "Initials avatar"}
+                                        {user?.department || "Not provided"}
+                                    </p>
+                                </div>
+                                <div className="rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface-subtle) p-4 md:col-span-2">
+                                    <div className="flex items-center gap-2 text-(--cit-text-muted)">
+                                        <CheckCircle2 size={16} />
+                                        <p className="text-xs font-semibold uppercase tracking-[0.2em]">
+                                            Profile Status
+                                        </p>
+                                    </div>
+                                    <p className="mt-2 text-base font-semibold text-(--cit-text)">
+                                        {isProfileComplete
+                                            ? "Your profile is complete and ready for campus engagement."
+                                            : "Your profile setup is still pending."}
                                     </p>
                                 </div>
                             </div>
@@ -226,6 +321,60 @@ export default function StudentProfile() {
                                             </p>
                                         )}
                                     </div>
+
+                                    <div>
+                                        <label className="mb-2 block text-sm font-semibold text-(--cit-text)">
+                                            Phone number
+                                        </label>
+                                        <input
+                                            {...register("phone", {
+                                                required:
+                                                    "Phone number is required",
+                                                pattern: {
+                                                    value: /^[0-9]{10}$/,
+                                                    message:
+                                                        "Enter a valid 10-digit phone number",
+                                                },
+                                            })}
+                                            className="w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-4 py-3 text-sm text-(--cit-text) outline-none transition focus:border-(--cit-primary) focus:ring-2 focus:ring-(--cit-primary-soft)"
+                                            placeholder="Enter your phone number"
+                                        />
+                                        {errors.phone && (
+                                            <p className="mt-2 text-sm text-(--cit-danger)">
+                                                {errors.phone.message}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <div>
+                                        <label className="mb-2 block text-sm font-semibold text-(--cit-text)">
+                                            Department
+                                        </label>
+                                        <select
+                                            {...register("department", {
+                                                required:
+                                                    "Please select your department",
+                                            })}
+                                            className="w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-4 py-3 text-sm text-(--cit-text) outline-none transition focus:border-(--cit-primary) focus:ring-2 focus:ring-(--cit-primary-soft)"
+                                        >
+                                            <option value="">
+                                                Select department
+                                            </option>
+                                            {departments.map((department) => (
+                                                <option
+                                                    key={department}
+                                                    value={department}
+                                                >
+                                                    {department}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {errors.department && (
+                                            <p className="mt-2 text-sm text-(--cit-danger)">
+                                                {errors.department.message}
+                                            </p>
+                                        )}
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-wrap items-center justify-end gap-3 border-t border-(--cit-border) pt-4">
@@ -242,7 +391,7 @@ export default function StudentProfile() {
                                         className="inline-flex items-center gap-2 rounded-(--cit-radius-md) bg-(--cit-primary) px-4 py-2 text-sm font-semibold text-white transition hover:bg-(--cit-primary-hover)"
                                     >
                                         <Save size={16} />
-                                        Save Changes
+                                        Save Profile
                                     </button>
                                 </div>
                             </form>
