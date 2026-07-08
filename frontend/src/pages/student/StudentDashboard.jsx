@@ -245,14 +245,14 @@ export default function StudentDashboard() {
 
     return (
         <main className="min-h-screen bg-(--cit-bg) py-4 md:px-8 lg:px-10">
-            <div className="mx-auto max-w-6xl space-y-8">
+            <div className="mx-auto max-w-6xl space-y-4 sm:space-y-8">
                 {/* Welcome Section */}
-                <section className="space-y-2">
+                <section >
                     <h1
-                        className="font-extrabold text-(--cit-text)"
-                        style={{ fontSize: "clamp(1.875rem, 5vw, 2.25rem)" }}
+                        className="font-extrabold text-(--cit-text) leading-tight"
+                        style={{ fontSize: "clamp(1.495rem, 5vw, 2.25rem)" }}
                     >
-                        Welcome Back, {displayName}
+                        Welcome Back,<br /> {displayName}
                     </h1>
                     <p className="text-sm text-(--cit-text-muted)">
                         Let's make the most of your competitions!
@@ -260,8 +260,8 @@ export default function StudentDashboard() {
                 </section>
 
                 {/* Overview Cards */}
-                <section className="grid gap-4 md:grid-cols-3">
-                    <div className="flex items-center gap-4 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-(--cit-shadow-sm)">
+                <section className="grid gap-1 md:gap-4 md:grid-cols-3">
+                    <div className="flex items-center gap-4 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-2 sm:p-4  lg:p-6 shadow-(--cit-shadow-sm)">
                         <Bookmark
                             size={40}
                             color="var(--cit-primary)"
@@ -271,7 +271,7 @@ export default function StudentDashboard() {
                             <p
                                 className="font-semibold text-(--cit-text-muted)"
                                 style={{
-                                    fontSize: "clamp(0.75rem, 2vw, 1.3rem)",
+                                    fontSize: "clamp(0.75rem, 1.5vw, 1.3rem)",
                                 }}
                             >
                                 Registered Events
@@ -279,7 +279,7 @@ export default function StudentDashboard() {
                             <h3
                                 className="font-extrabold text-(--cit-text)"
                                 style={{
-                                    fontSize: "clamp(1.875rem, 6vw, 2.8rem)",
+                                    fontSize: "clamp(1.875rem, 3vw, 2.8rem)",
                                 }}
                             >
                                 {registeredEvents.length}
@@ -287,7 +287,7 @@ export default function StudentDashboard() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-(--cit-shadow-sm)">
+                    <div className="flex items-center gap-4 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-2 sm:p-4 lg:p-6 shadow-(--cit-shadow-sm)">
                         <CalendarDays
                             size={40}
                             color="var(--cit-primary)"
@@ -297,7 +297,7 @@ export default function StudentDashboard() {
                             <p
                                 className="font-semibold text-(--cit-text-muted)"
                                 style={{
-                                    fontSize: "clamp(0.75rem, 2vw, 1.3rem)",
+                                    fontSize: "clamp(0.75rem, 1.5vw, 1.3rem)",
                                 }}
                             >
                                 Upcoming Events
@@ -305,7 +305,7 @@ export default function StudentDashboard() {
                             <h3
                                 className="font-extrabold text-(--cit-text)"
                                 style={{
-                                    fontSize: "clamp(1.875rem, 6vw, 2.8rem)",
+                                    fontSize: "clamp(1.875rem, 3vw, 2.8rem)",
                                 }}
                             >
                                 {upcomingEvents.length}
@@ -313,7 +313,7 @@ export default function StudentDashboard() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-4 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-(--cit-shadow-sm)">
+                    <div className="flex items-center gap-4 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-2 sm:p-4 lg:p-6 shadow-(--cit-shadow-sm)">
                         <Award
                             size={40}
                             color="var(--cit-primary)"
@@ -323,7 +323,7 @@ export default function StudentDashboard() {
                             <p
                                 className="font-semibold text-(--cit-text-muted)"
                                 style={{
-                                    fontSize: "clamp(0.75rem, 2vw, 1.3rem)",
+                                    fontSize: "clamp(0.75rem, 1.5vw, 1.3rem)",
                                 }}
                             >
                                 Certificates Earned
@@ -331,7 +331,7 @@ export default function StudentDashboard() {
                             <h3
                                 className="font-extrabold text-(--cit-text)"
                                 style={{
-                                    fontSize: "clamp(1.875rem, 6vw, 2.8rem)",
+                                    fontSize: "clamp(1.875rem, 3vw, 2.8rem)",
                                 }}
                             >
                                 {totalCertificates}
