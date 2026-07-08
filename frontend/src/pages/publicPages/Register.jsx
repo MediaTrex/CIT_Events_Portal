@@ -10,9 +10,9 @@ import {
     Zap,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import AuthCarousel from "../components/AuthCarousel";
-import MetaData from "../components/MetaData";
-import { DecorativeCircles } from "../components/DecorativeCircles";
+import AuthCarousel from "../../components/AuthCarousel";
+import MetaData from "../../components/MetaData";
+import { DecorativeCircles } from "../../components/DecorativeCircles";
 
 export default function Register() {
     const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,7 @@ export default function Register() {
 
     return (
         <main className="relative min-h-screen overflow-hidden bg-linear-to-br from-(--cit-primary) via-[#0c5fcc] to-[#1a3a6b] text-white">
-            <DecorativeCircles/>
+            <DecorativeCircles />
             <MetaData
                 title="Register"
                 description="Create your CIT Events Portal account to register for events and manage your participation."

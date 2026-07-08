@@ -21,9 +21,9 @@ import {
     Banknote,
     Gift,
 } from "lucide-react";
-import Layout from "../layout/Layout";
-import MetaData from "../components/MetaData";
-import { ALL_EVENTS } from "../data/events";
+import Layout from "../../layout/Layout";
+import MetaData from "../../components/MetaData";
+import { ALL_EVENTS } from "../../data/events";
 
 // --- Data ---
 

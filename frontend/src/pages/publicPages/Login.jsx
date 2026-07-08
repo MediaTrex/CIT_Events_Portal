@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { ArrowRight, Eye, EyeOff, Mail, ShieldCheck, Zap } from "lucide-react";
 import { SiFacebook, SiGithub } from "react-icons/si";
-import AuthCarousel from "../components/AuthCarousel";
-import MetaData from "../components/MetaData";
-import { DecorativeCircles } from "../components/DecorativeCircles";
-import { useAuthContext } from "../context/AuthContext";
+import AuthCarousel from "../../components/AuthCarousel";
+import MetaData from "../../components/MetaData";
+import { DecorativeCircles } from "../../components/DecorativeCircles";
+import { useAuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
 export default function Login() {

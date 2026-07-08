@@ -14,10 +14,10 @@ import {
     Users,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import { useAuthContext } from "../context/AuthContext";
-import { ALL_EVENTS } from "../data/events";
-import Layout from "../layout/Layout";
-import MetaData from "../components/MetaData";
+import { useAuthContext } from "../../context/AuthContext";
+import { ALL_EVENTS } from "../../data/events";
+import Layout from "../../layout/Layout";
+import MetaData from "../../components/MetaData";
 
 export default function EventDetails() {
     const { id } = useParams();

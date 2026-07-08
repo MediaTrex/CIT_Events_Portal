@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import AuthCarousel from "../components/AuthCarousel";
-import MetaData from "../components/MetaData";
-import { DecorativeCircles } from "../components/DecorativeCircles";
+import AuthCarousel from "../../components/AuthCarousel";
+import MetaData from "../../components/MetaData";
+import { DecorativeCircles } from "../../components/DecorativeCircles";
 
 const steps = [
     {
