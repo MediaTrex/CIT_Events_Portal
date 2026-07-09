@@ -41,7 +41,11 @@ export default function Login() {
         });
 
         toast.success("Login successful!");
-        const redirectTo = location.state?.from || "/";
+        // support full location object passed in state (preserves search/hash)
+        const fromLocation = location.state?.from;
+        const redirectTo = fromLocation
+            ? (fromLocation.pathname || "/") + (fromLocation.search || "") + (fromLocation.hash || "")
+            : "/";
         navigate(redirectTo, { replace: true });
     };
 
