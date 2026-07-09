@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 
 export default function Header() {
+    const [logoutConfirmation, setLogoutConfirmation] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const profileRef = useRef(null);
@@ -73,8 +74,7 @@ export default function Header() {
 
     const handleLogout = () => {
         setUser(null);
-        setProfileOpen(false);
-        setMobileOpen(false);
+        setLogoutConfirmation(false);
     };
 
     return (
@@ -339,7 +339,10 @@ export default function Header() {
                                             Dashboard
                                         </Link>
                                         <button
-                                            onClick={handleLogout}
+                                            onClick={() => {
+                                                setLogoutConfirmation(true);
+                                                setProfileOpen(false);
+                                            }}
                                             style={{
                                                 width: "100%",
                                                 textAlign: "left",
@@ -612,7 +615,10 @@ export default function Header() {
                                         Dashboard
                                     </Link>
                                     <button
-                                        onClick={handleLogout}
+                                        onClick={() => {
+                                            setLogoutConfirmation(true);
+                                            setMobileOpen(false);
+                                        }}
                                         style={{
                                             padding: "10px 12px",
                                             borderRadius: 8,
@@ -679,7 +685,31 @@ export default function Header() {
                     </div>
                 </div>
             </div>
-
+            {logoutConfirmation && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4 logout-modal-backdrop">
+                    <div className="logout-modal-card rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-lg max-w-sm w-full">
+                        <div className="mb-4">
+                            <p className="mt-2 text-sm text-(--cit-text-muted)">
+                                Are you sure you want to logout?
+                            </p>
+                        </div>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setLogoutConfirmation(false)}
+                                className="cursor-pointer flex-1 rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-4 py-2.5 font-medium text-(--cit-text) transition-colors hover:bg-(--cit-surface-subtle)"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleLogout}
+                                className="cursor-pointer flex-1 rounded-(--cit-radius-md) bg-(--cit-danger) px-4 py-2.5 font-medium text-white transition-colors hover:bg-opacity-90"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <style>{`
         @media (max-width: 768px) {
           .nav-desktop { display: none !important; }
@@ -689,6 +719,33 @@ export default function Header() {
           .nav-mobile-menu { display: none !important; }
         }
         .nav-mobile-menu { display: block; }
+
+        .logout-modal-backdrop {
+          opacity: 0;
+          animation: logoutBackdropFade 220ms ease-out forwards;
+        }
+
+        .logout-modal-card {
+          opacity: 0;
+          transform: translateY(14px) scale(0.98);
+          animation: logoutCardPop 220ms ease-out forwards;
+        }
+
+        @keyframes logoutBackdropFade {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        @keyframes logoutCardPop {
+          from {
+            opacity: 0;
+            transform: translateY(14px) scale(0.98);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
       `}</style>
         </nav>
     );

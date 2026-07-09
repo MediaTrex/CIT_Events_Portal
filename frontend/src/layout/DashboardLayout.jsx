@@ -340,8 +340,8 @@ export default function DashboardLayout({ role }) {
 
                 {/* // logout confirmation pop-up */}
                 {logoutConfirmation && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4">
-                        <div className="opacity-100 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-lg max-w-sm w-full">
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4 logout-modal-backdrop">
+                        <div className="logout-modal-card opacity-100 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-lg max-w-sm w-full">
                             <div className="mb-4">
                                 <p className="mt-2 text-sm text-(--cit-text-muted)">
                                     Are you sure you want to logout ?
@@ -368,6 +368,34 @@ export default function DashboardLayout({ role }) {
                     </div>
                 )}
             </div>
+            <style>{`
+                .logout-modal-backdrop {
+                    opacity: 0;
+                    animation: logoutBackdropFade 220ms ease-out forwards;
+                }
+
+                .logout-modal-card {
+                    opacity: 0;
+                    transform: translateY(14px) scale(0.98);
+                    animation: logoutCardPop 220ms ease-out forwards;
+                }
+
+                @keyframes logoutBackdropFade {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+
+                @keyframes logoutCardPop {
+                    from {
+                        opacity: 0;
+                        transform: translateY(14px) scale(0.98);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+            `}</style>
         </div>
     );
 }
