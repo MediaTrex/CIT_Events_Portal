@@ -213,7 +213,7 @@ export default function DashboardLayout({ role }) {
                             </button>
                             <button
                                 type="button"
-                                className="inline-flex h-10 w-10 items-center justify-center rounded-[14px] border border-(--cit-border) bg-(--cit-surface) text-(--cit-text)"
+                                className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-[14px] border border-(--cit-border) bg-(--cit-surface) text-(--cit-text)"
                                 onClick={() => setLogoutConfirmation(true)}
                             >
                                 <LogOut size={18} />
