@@ -245,7 +245,7 @@ export default function StudentDashboard() {
 
     return (
         <main className="min-h-screen bg-(--cit-bg) py-4 md:px-8 lg:px-10">
-            <div className="mx-auto max-w-6xl space-y-4 sm:space-y-8">
+            <div className="mx-auto max-w-300 space-y-4 sm:space-y-8">
                 {/* Welcome Section */}
                 <section>
                     <h1
