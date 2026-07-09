@@ -24,13 +24,13 @@ const getEventTypeColor = (type) => {
 
 export default function StudentMyEvents() {
     return (
-        <main className="min-h-screen bg-(--cit-bg) px-2 sm:px-4 md:px-6 lg:px-10 py-6 md:py-10">
+        <main className="max-w-300 mx-auto min-h-screen bg-(--cit-bg) py-4 md:py-6">
             <div className="mx-auto w-full rounded-(--cit-radius-xl) border border-(--cit-border) bg-(--cit-surface) p-3 sm:p-5 md:p-7">
                 <div className="mb-6 md:mb-8">
-                    <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold text-(--cit-text)">
-                        Event Registrations
+                    <h1 className="text-sm sm:text-lg font-extrabold text-(--cit-text)">
+                        See all your registered events here,
                     </h1>
-                    <p className="mt-2 text-xs sm:text-sm text-(--cit-text-muted)">
+                    <p className=" text-xs sm:text-sm text-(--cit-text-muted)">
                         Manage your registrations, payments, and event details.
                     </p>
                 </div>
