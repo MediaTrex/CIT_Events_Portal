@@ -162,13 +162,11 @@ export default function StudentMyTeams() {
     };
 
     return (
-        <main className="min-h-screen bg-(--cit-bg) px-4 py-8 md:px-6 lg:px-8">
-            <div className="mx-auto max-w-7xl">
+        <main className="min-h-screen bg-(--cit-bg)">
+            <div className="mx-auto max-w-300">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold text-(--cit-text) md:text-4xl">
-                        My Teams
-                    </h1>
+                   
                     <p className="mt-2 text-sm text-(--cit-text-muted) md:text-base">
                         Create teams for events or join existing ones
                     </p>
@@ -373,8 +371,8 @@ export default function StudentMyTeams() {
                                                                 •{" "}
                                                                 {getTeamMemberCount(
                                                                     team,
-                                                                )}
-                                                                /6 members
+                                                                )}{" "}
+                                                                members
                                                             </p>
                                                         </div>
                                                     </div>
