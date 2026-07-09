@@ -42,6 +42,7 @@ const roleNav = {
 };
 
 export default function DashboardLayout({ role }) {
+    let [logoutConfirmation, setLogoutConfirmation] = useState(false);
     const { user, setUser } = useAuthContext();
     const location = useLocation();
     const [isPinned, setIsPinned] = useState(false);
@@ -298,8 +299,8 @@ export default function DashboardLayout({ role }) {
                     <div className="mt-auto">
                         <button
                             type="button"
-                            className="flex h-12 w-full items-center gap-3 rounded-[14px] border border-(--cit-border) bg-(--cit-surface) px-3 text-sm font-semibold text-(--cit-text) transition hover:bg-(--cit-primary-soft)"
-                            onClick={() => setUser(null)}
+                            className="cursor-pointer flex h-12 w-full items-center gap-3 rounded-[14px] border border-(--cit-border) bg-(--cit-surface) px-3 text-sm font-semibold text-(--cit-text) transition hover:bg-(--cit-primary-soft)"
+                            onClick={() => setLogoutConfirmation(true)}
                         >
                             <LogOut size={18} />
                             <span
@@ -334,6 +335,36 @@ export default function DashboardLayout({ role }) {
                         className="fixed inset-0 z-40 bg-black/30 md:hidden"
                         onClick={() => setMobileOpen(false)}
                     />
+                )}
+
+                {/* // logout confirmation pop-up */}
+                {logoutConfirmation && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(0,0,0,0.5)] p-4">
+                        <div className="opacity-100 rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-lg max-w-sm w-full">
+                            <div className="mb-4">
+                                <p className="mt-2 text-sm text-(--cit-text-muted)">
+                                    Are you sure you want to logout ?
+                                </p>
+                            </div>
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => setLogoutConfirmation(false)}
+                                    className="cursor-pointer flex-1 rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-4 py-2.5 font-medium text-(--cit-text) transition-colors hover:bg-(--cit-surface-subtle)"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setLogoutConfirmation(false);
+                                        setUser(null);
+                                    }}
+                                    className="cursor-pointer flex-1 rounded-(--cit-radius-md) bg-(--cit-danger) px-4 py-2.5 font-medium text-white transition-colors hover:bg-opacity-90"
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 )}
             </div>
         </div>
