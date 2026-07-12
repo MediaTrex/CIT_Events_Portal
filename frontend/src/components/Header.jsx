@@ -100,7 +100,8 @@ export default function Header() {
                     }}
                 >
                     {/* Logo */}
-                    <button
+                    <Link
+                        to="/"
                         style={{
                             display: "flex",
                             alignItems: "center",
@@ -137,7 +138,7 @@ export default function Header() {
                             CIT{" "}
                             <span style={{ color: "#1877F2" }}>Event Hub</span>
                         </span>
-                    </button>
+                    </Link>
 
                     {/* Desktop Nav */}
                     <div
