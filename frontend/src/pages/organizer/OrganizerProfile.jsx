@@ -36,6 +36,7 @@ export default function OrganizerProfile() {
     const fileInputRef = useRef(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [applyMessage, setApplyMessage] = useState("");
+    const [approvalError, setApprovalError] = useState("");
 
     const {
         register,
@@ -111,13 +112,26 @@ export default function OrganizerProfile() {
     const closeApplyModal = () => setIsModalOpen(false);
 
     const sendApprovalRequest = () => {
+        if (!applyMessage.trim()) {
+            setApprovalError("Please write a message for admin approval.");
+            return;
+        }
+
         // store the request locally on user object; backend integration can be added later
         setUser((currentUser) => ({
             ...currentUser,
             approvalRequested: true,
-            approvalMessage: applyMessage || "",
+            approvalMessage: applyMessage.trim(),
         }));
+        setApprovalError("");
         setIsModalOpen(false);
+    };
+
+    const handleApplyMessageChange = (event) => {
+        setApplyMessage(event.target.value);
+        if (event.target.value.trim()) {
+            setApprovalError("");
+        }
     };
 
     return (
@@ -554,13 +568,16 @@ export default function OrganizerProfile() {
                             </p>
                             <textarea
                                 value={applyMessage}
-                                onChange={(e) =>
-                                    setApplyMessage(e.target.value)
-                                }
+                                onChange={handleApplyMessageChange}
                                 rows={6}
                                 className="mt-4 w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) p-3 text-sm text-(--cit-text) outline-none"
                                 placeholder="Hello Admin, I would like to be approved as an organizer because..."
                             ></textarea>
+                            {approvalError && (
+                                <p className="mt-3 text-sm text-(--cit-danger)">
+                                    {approvalError}
+                                </p>
+                            )}
                             <div className="mt-4 flex justify-end gap-3">
                                 <button
                                     type="button"
@@ -572,7 +589,8 @@ export default function OrganizerProfile() {
                                 <button
                                     type="button"
                                     onClick={sendApprovalRequest}
-                                    className="cursor-pointer inline-flex items-center rounded-(--cit-radius-md) bg-(--cit-primary) px-4 py-2 text-sm font-semibold text-white"
+                                    disabled={!applyMessage.trim()}
+                                    className="cursor-pointer inline-flex items-center rounded-(--cit-radius-md) bg-(--cit-primary) px-4 py-2 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-50"
                                 >
                                     Send Request
                                 </button>
