@@ -33,10 +33,12 @@ export default function OrganizerCreateEvent() {
         watch,
         setValue,
         reset,
-        setError,
+        trigger,
         clearErrors,
         formState: { errors },
     } = useForm({
+        mode: "onSubmit",
+        reValidateMode: "onChange",
         defaultValues: {
             title: "",
             category: "All",
@@ -62,20 +64,39 @@ export default function OrganizerCreateEvent() {
     const bannerImage = watch("bannerImage");
 
     useEffect(() => {
-        setValue("tags", tags, { shouldValidate: true });
-    }, [setValue, tags]);
+        setValue("tags", tags, { shouldValidate: false });
+        setValue("rules", rules, { shouldValidate: false });
+        setValue("privacyPolicies", privacyPolicies, { shouldValidate: false });
+    }, [setValue, tags, rules, privacyPolicies]);
 
     useEffect(() => {
-        setValue("rules", rules, { shouldValidate: true });
-    }, [setValue, rules]);
+        if (tags.length > 0) {
+            clearErrors("tags");
+        }
+    }, [tags, clearErrors]);
 
     useEffect(() => {
-        setValue("privacyPolicies", privacyPolicies, { shouldValidate: true });
-    }, [setValue, privacyPolicies]);
+        if (rules.length > 0) {
+            clearErrors("rules");
+        }
+    }, [rules, clearErrors]);
 
     useEffect(() => {
-        setValue("description", descriptionHtml, { shouldValidate: true });
-    }, [setValue, descriptionHtml]);
+        if (privacyPolicies.length > 0) {
+            clearErrors("privacyPolicies");
+        }
+    }, [privacyPolicies, clearErrors]);
+
+    useEffect(() => {
+        const plainText = descriptionHtml
+            .replace(/<[^>]+>/g, "")
+            .replace(/&nbsp;/gi, "")
+            .trim();
+
+        if (plainText.length > 0) {
+            clearErrors("description");
+        }
+    }, [descriptionHtml, clearErrors]);
 
     useEffect(() => {
         if (!bannerImage || !bannerImage[0]) {
@@ -93,90 +114,125 @@ export default function OrganizerCreateEvent() {
     const addTag = () => {
         const trimmedTag = tagInput.trim();
         if (!trimmedTag || tags.length >= 3) return;
-        setTags((current) => [...current, trimmedTag]);
+        const nextTags = [...tags, trimmedTag];
+        setTags(nextTags);
         setTagInput("");
+        setValue("tags", nextTags, {
+            shouldValidate: true,
+            shouldTouch: true,
+            shouldDirty: true,
+        });
+        void trigger("tags").then((isValid) => {
+            if (isValid) {
+                clearErrors("tags");
+            }
+        });
     };
 
     const removeTag = (tagToRemove) => {
-        setTags((current) => current.filter((tag) => tag !== tagToRemove));
+        const nextTags = tags.filter((tag) => tag !== tagToRemove);
+        setTags(nextTags);
+        setValue("tags", nextTags, {
+            shouldValidate: true,
+            shouldTouch: true,
+            shouldDirty: true,
+        });
+        void trigger("tags").then((isValid) => {
+            if (isValid) {
+                clearErrors("tags");
+            }
+        });
     };
 
     const addListItem = (type) => {
         if (type === "rule") {
             const trimmed = ruleInput.trim();
             if (!trimmed) return;
-            setRules((current) => [...current, trimmed]);
+            const nextRules = [...rules, trimmed];
+            setRules(nextRules);
             setRuleInput("");
+            setValue("rules", nextRules, {
+                shouldValidate: true,
+                shouldTouch: true,
+                shouldDirty: true,
+            });
+            void trigger("rules").then((isValid) => {
+                if (isValid) {
+                    clearErrors("rules");
+                }
+            });
             return;
         }
 
         const trimmed = privacyInput.trim();
         if (!trimmed) return;
-        setPrivacyPolicies((current) => [...current, trimmed]);
+        const nextPolicies = [...privacyPolicies, trimmed];
+        setPrivacyPolicies(nextPolicies);
         setPrivacyInput("");
+        setValue("privacyPolicies", nextPolicies, {
+            shouldValidate: true,
+            shouldTouch: true,
+            shouldDirty: true,
+        });
+        void trigger("privacyPolicies").then((isValid) => {
+            if (isValid) {
+                clearErrors("privacyPolicies");
+            }
+        });
     };
 
     const removeListItem = (type, valueToRemove) => {
         if (type === "rule") {
-            setRules((current) =>
-                current.filter((item) => item !== valueToRemove),
-            );
+            const nextRules = rules.filter((item) => item !== valueToRemove);
+            setRules(nextRules);
+            setValue("rules", nextRules, {
+                shouldValidate: true,
+                shouldTouch: true,
+                shouldDirty: true,
+            });
+            void trigger("rules").then((isValid) => {
+                if (isValid) {
+                    clearErrors("rules");
+                }
+            });
             return;
         }
 
-        setPrivacyPolicies((current) =>
-            current.filter((item) => item !== valueToRemove),
+        const nextPolicies = privacyPolicies.filter(
+            (item) => item !== valueToRemove,
         );
+        setPrivacyPolicies(nextPolicies);
+        setValue("privacyPolicies", nextPolicies, {
+            shouldValidate: true,
+            shouldTouch: true,
+            shouldDirty: true,
+        });
+        void trigger("privacyPolicies").then((isValid) => {
+            if (isValid) {
+                clearErrors("privacyPolicies");
+            }
+        });
     };
 
     const insertEditorFormat = (command, value = null) => {
         if (!editorRef.current) return;
         editorRef.current.focus();
         document.execCommand(command, false, value);
-        setDescriptionHtml(editorRef.current.innerHTML);
+        const nextHtml = editorRef.current.innerHTML;
+        setDescriptionHtml(nextHtml);
+        setValue("description", nextHtml, {
+            shouldValidate: true,
+            shouldTouch: true,
+            shouldDirty: true,
+        });
+        void trigger("description").then((isValid) => {
+            if (isValid) {
+                clearErrors("description");
+            }
+        });
     };
 
     const onSubmit = (data) => {
-        clearErrors(["tags", "rules", "privacyPolicies", "description"]);
-
-        let hasValidationErrors = false;
-
-        if (!tags.length) {
-            setError("tags", {
-                type: "manual",
-                message: "Add at least one tag",
-            });
-            hasValidationErrors = true;
-        }
-
-        if (!rules.length) {
-            setError("rules", {
-                type: "manual",
-                message: "Add at least one rule",
-            });
-            hasValidationErrors = true;
-        }
-
-        if (!privacyPolicies.length) {
-            setError("privacyPolicies", {
-                type: "manual",
-                message: "Add at least one privacy policy note",
-            });
-            hasValidationErrors = true;
-        }
-
-        if (!descriptionHtml.trim()) {
-            setError("description", {
-                type: "manual",
-                message: "Description is required",
-            });
-            hasValidationErrors = true;
-        }
-
-        if (hasValidationErrors) {
-            return;
-        }
-
         const payload = {
             ...data,
             tags,
@@ -239,6 +295,44 @@ export default function OrganizerCreateEvent() {
                 onSubmit={handleSubmit(onSubmit)}
                 className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]"
             >
+                <input
+                    type="hidden"
+                    {...register("tags", {
+                        validate: (value) =>
+                            value?.length > 0 || "Add at least one tag",
+                    })}
+                />
+                <input
+                    type="hidden"
+                    {...register("rules", {
+                        validate: (value) =>
+                            value?.length > 0 || "Add at least one rule",
+                    })}
+                />
+                <input
+                    type="hidden"
+                    {...register("privacyPolicies", {
+                        validate: (value) =>
+                            value?.length > 0 ||
+                            "Add at least one privacy policy note",
+                    })}
+                />
+                <input
+                    type="hidden"
+                    {...register("description", {
+                        validate: (value) => {
+                            const normalized = String(value)
+                                .replace(/<[^>]+>/g, "")
+                                .replace(/&nbsp;/gi, "")
+                                .trim();
+                            return (
+                                normalized.length > 0 ||
+                                "Description is required"
+                            );
+                        },
+                    })}
+                />
+
                 <section className="rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) p-6 shadow-(--cit-shadow-sm)">
                     <div className="grid gap-6">
                         <div className="grid gap-6 md:grid-cols-2">
@@ -649,6 +743,11 @@ export default function OrganizerCreateEvent() {
                                     You have reached the limit of 3 tags.
                                 </p>
                             )}
+                            {errors.tags && (
+                                <p className="text-sm text-(--cit-danger)">
+                                    {errors.tags.message}
+                                </p>
+                            )}
                         </div>
 
                         <div className="space-y-2">
@@ -697,11 +796,27 @@ export default function OrganizerCreateEvent() {
                                     ref={editorRef}
                                     contentEditable
                                     suppressContentEditableWarning
-                                    onInput={(event) =>
-                                        setDescriptionHtml(
-                                            event.currentTarget.innerHTML,
-                                        )
-                                    }
+                                    onInput={(event) => {
+                                        const nextHtml =
+                                            event.currentTarget.innerHTML;
+                                        const plainText = String(nextHtml)
+                                            .replace(/<[^>]+>/g, "")
+                                            .replace(/&nbsp;/gi, "")
+                                            .trim();
+                                        setDescriptionHtml(nextHtml);
+                                        setValue("description", plainText, {
+                                            shouldValidate: true,
+                                            shouldTouch: true,
+                                            shouldDirty: true,
+                                        });
+                                        void trigger("description").then(
+                                            (isValid) => {
+                                                if (isValid) {
+                                                    clearErrors("description");
+                                                }
+                                            },
+                                        );
+                                    }}
                                     className="min-h-40 rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-3 py-3 text-sm leading-6 text-(--cit-text) outline-none"
                                     data-placeholder="Write your event description"
                                 />
