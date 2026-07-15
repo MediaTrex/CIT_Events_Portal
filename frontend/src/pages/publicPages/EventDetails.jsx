@@ -12,10 +12,13 @@ import {
     Wifi,
     WifiOff,
     Users,
+    X,
+    Upload,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuthContext } from "../../context/AuthContext";
 import { ALL_EVENTS } from "../../data/events";
+import { initialTeams } from "../../data/teams";
 import Layout from "../../layout/Layout";
 import MetaData from "../../components/MetaData";
 
@@ -32,6 +35,11 @@ export default function EventDetails() {
     const navigate = useNavigate();
     const location = useLocation();
     const [registered, setRegistered] = useState(false);
+    const [showRegistrationModal, setShowRegistrationModal] = useState(false);
+    const [selectedTeam, setSelectedTeam] = useState("");
+    const [proposalFile, setProposalFile] = useState(null);
+    const [isSubmittingRegistration, setIsSubmittingRegistration] =
+        useState(false);
 
     if (!event) {
         return (
@@ -73,14 +81,215 @@ export default function EventDetails() {
             return;
         }
 
-        if (!registered) {
+        // Show registration modal instead of directly registering
+        setShowRegistrationModal(true);
+        setSelectedTeam("");
+        setProposalFile(null);
+    };
+
+    const handleCloseRegistrationModal = () => {
+        setShowRegistrationModal(false);
+        setSelectedTeam("");
+        setProposalFile(null);
+    };
+
+    const handleProposalFileChange = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            if (file.type !== "application/pdf") {
+                toast.error("Please upload a PDF file");
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                // 5MB limit
+                toast.error("File size must be less than 5MB");
+                return;
+            }
+            setProposalFile(file);
+        }
+    };
+
+    const handleSubmitRegistration = async () => {
+        // Validate based on event type
+        if (event.type === "Team" && !selectedTeam) {
+            toast.error("Please select a team");
+            return;
+        }
+
+        if (!proposalFile) {
+            toast.error("Please upload a proposal PDF");
+            return;
+        }
+
+        setIsSubmittingRegistration(true);
+
+        try {
+            // TODO: Replace with actual API call to register
+            // Send selectedTeam and proposalFile to backend
+            await new Promise((resolve) => setTimeout(resolve, 800)); // Mock API call
+
             setRegistered(true);
-            toast.success("You are registered for this event!");
+            setShowRegistrationModal(false);
+            setSelectedTeam("");
+            setProposalFile(null);
+            toast.success(`Successfully registered for ${event.title}!`);
+        } catch (error) {
+            toast.error("Failed to register. Please try again.");
+            console.error(error);
+        } finally {
+            setIsSubmittingRegistration(false);
         }
     };
 
     return (
         <Layout>
+            {/* Registration Modal */}
+            {showRegistrationModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="w-full max-w-md rounded-(--cit-radius-lg) border border-(--cit-border) bg-(--cit-surface) shadow-[0_24px_70px_rgba(0,0,0,0.12)]">
+                        <div className="flex items-center justify-between border-b border-(--cit-border) px-5 py-4 sm:px-6 sm:py-5">
+                            <h2 className="text-lg font-bold text-(--cit-text) sm:text-xl">
+                                Register for Event
+                            </h2>
+                            <button
+                                type="button"
+                                onClick={handleCloseRegistrationModal}
+                                className="cursor-pointer rounded-lg p-1 text-(--cit-text-muted) hover:bg-(--cit-surface-subtle)"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div className="space-y-5 px-5 py-4 sm:px-6 sm:py-5">
+                            {/* Team Selection - Only for Team Events */}
+                            {event.type === "Team" && (
+                                <div>
+                                    <label className="block text-sm font-semibold text-(--cit-text) mb-2">
+                                        Select Team{" "}
+                                        <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
+                                        value={selectedTeam}
+                                        onChange={(e) =>
+                                            setSelectedTeam(e.target.value)
+                                        }
+                                        className="w-full rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-3 py-2.5 text-sm text-(--cit-text) focus:border-(--cit-primary) focus:outline-none focus:ring-1 focus:ring-(--cit-primary)"
+                                    >
+                                        <option value="">
+                                            Choose a team...
+                                        </option>
+                                        {initialTeams.map((team) => (
+                                            <option
+                                                key={team.id}
+                                                value={team.id}
+                                            >
+                                                {team.name} (
+                                                {team.members.length} members)
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {selectedTeam && (
+                                        <div className="mt-3 rounded-(--cit-radius-md) bg-(--cit-surface-subtle) p-3">
+                                            <p className="text-xs font-semibold text-(--cit-text-muted) mb-2">
+                                                Team Members:
+                                            </p>
+                                            <ul className="space-y-1 text-xs text-(--cit-text-muted)">
+                                                {initialTeams
+                                                    .find(
+                                                        (t) =>
+                                                            t.id ===
+                                                            selectedTeam,
+                                                    )
+                                                    ?.members.map((member) => (
+                                                        <li
+                                                            key={member.id}
+                                                            className="flex items-center gap-2"
+                                                        >
+                                                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-(--cit-primary)" />
+                                                            {member.name}
+                                                        </li>
+                                                    ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* Proposal PDF Upload - For Both Team and Individual */}
+                            <div>
+                                <label className="block text-sm font-semibold text-(--cit-text) mb-2">
+                                    Upload Proposal (PDF){" "}
+                                    <span className="text-red-500">*</span>
+                                </label>
+                                <div
+                                    className="relative rounded-(--cit-radius-md) border-2 border-dashed border-(--cit-border) bg-(--cit-surface-subtle) p-6 text-center transition-colors hover:border-(--cit-primary) hover:bg-(--cit-surface)"
+                                    onDragOver={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                    }}
+                                    onDrop={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        const files = e.dataTransfer.files;
+                                        if (files?.[0]) {
+                                            const mockEvent = {
+                                                target: { files: files },
+                                            };
+                                            handleProposalFileChange(mockEvent);
+                                        }
+                                    }}
+                                >
+                                    <input
+                                        type="file"
+                                        accept="application/pdf"
+                                        onChange={handleProposalFileChange}
+                                        className="absolute inset-0 opacity-0 cursor-pointer"
+                                    />
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="rounded-lg bg-(--cit-primary-soft) p-3 text-(--cit-primary)">
+                                            <Upload size={20} />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-semibold text-(--cit-text)">
+                                                {proposalFile
+                                                    ? proposalFile.name
+                                                    : "Click to upload or drag & drop"}
+                                            </p>
+                                            {!proposalFile && (
+                                                <p className="mt-1 text-xs text-(--cit-text-muted)">
+                                                    PDF up to 5MB
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-3 border-t border-(--cit-border) px-5 py-4 sm:px-6 sm:py-5">
+                            <button
+                                type="button"
+                                onClick={handleCloseRegistrationModal}
+                                disabled={isSubmittingRegistration}
+                                className="cursor-pointer flex-1 rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-4 py-2.5 text-sm font-semibold text-(--cit-text) transition-colors hover:bg-(--cit-surface-subtle) disabled:opacity-60"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleSubmitRegistration}
+                                disabled={isSubmittingRegistration}
+                                className="cursor-pointer flex-1 rounded-(--cit-radius-md) bg-(--cit-primary) px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-(--cit-primary-hover) disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                {isSubmittingRegistration
+                                    ? "Registering..."
+                                    : "Register"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <main className="relative min-h-screen bg-(--cit-bg) text-(--cit-text)">
                 <MetaData
                     title={event.title}
