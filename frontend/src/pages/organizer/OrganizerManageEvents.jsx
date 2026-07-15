@@ -742,7 +742,7 @@ export default function OrganizerManageEvents() {
                                                     {selectedEvent.type} event
                                                 </span>
                                             </div>
-                                            <p className="mt-3 max-w-2xl text-xs leading-5 text-(--cit-text-muted) sm:text-sm">
+                                            <p className="mt-3 max-w-2xl text-xs leading-5 text-(--cit-text-muted) sm:text-sm line-clamp-3">
                                                 {selectedEvent.description}
                                             </p>
                                         </div>
