@@ -98,7 +98,6 @@ export function Footer() {
                                 fontSize: 15,
                                 color: "#1C1E21",
                                 outline: "none",
-                                
                             }}
                             className="flex-1 max-xs:py-2! max-xs:px-4! max-xs:text-sm!"
                         />
@@ -158,6 +157,7 @@ export function Footer() {
                                     marginBottom: 20,
                                 }}
                             >
+                                {/*
                                 <div
                                     style={{
                                         width: 38,
@@ -182,6 +182,17 @@ export function Footer() {
                                 >
                                     CIT Event Hub
                                 </span>
+                                */}
+                                <img
+                                    src="/cit-logo.png"
+                                    alt="CIT logo"
+                                    style={{
+                                        width: 300,
+                                        objectFit: "contain",
+                                        objectPosition: "center",
+                                        display: "block",
+                                    }}
+                                />
                             </a>
                             <p
                                 style={{

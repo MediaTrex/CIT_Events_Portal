@@ -112,6 +112,7 @@ export default function Header() {
                             padding: 0,
                         }}
                     >
+                        {/*
                         <div
                             style={{
                                 width: 36,
@@ -138,6 +139,17 @@ export default function Header() {
                             CIT{" "}
                             <span style={{ color: "#1877F2" }}>Event Hub</span>
                         </span>
+                        */}
+                        <img
+                            src="/cit-logo.png"
+                            alt="CIT logo"
+                            style={{
+                                width: 300,
+                                objectFit: "contain",
+                                objectPosition: "center",
+                                display: "block",
+                            }}
+                        />
                     </Link>
 
                     {/* Desktop Nav */}

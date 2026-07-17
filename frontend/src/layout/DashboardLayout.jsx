@@ -117,7 +117,7 @@ export default function DashboardLayout({ role }) {
     return (
         <div className="min-h-screen bg-(--cit-bg) text-(--cit-text) overflow-x-hidden">
             <header className="sticky top-0 z-40 bg-(--cit-surface) border-b border-(--cit-border) shadow-[0_10px_30px_rgba(15,23,42,0.06)]">
-                <div className="mx-auto max-w-300 w-full px-2 py-4">
+                <div className="mx-auto max-w-300 w-full px-2">
                     <div className="flex items-center justify-between gap-4">
                         <div className="flex items-center gap-1">
                             <button
@@ -132,6 +132,7 @@ export default function DashboardLayout({ role }) {
                                 to={"/"}
                                 className="flex items-center gap-3 text-(--cit-text)"
                             >
+                                {/*
                                 <div className="grid h-10 w-10 place-items-center rounded-xl bg-linear-to-br from-(--cit-primary) to-[#0c5fcc] text-white shadow-[0_8px_16px_rgba(24,119,242,0.22)]">
                                     <Zap size={18} />
                                 </div>
@@ -143,6 +144,12 @@ export default function DashboardLayout({ role }) {
                                         </span>
                                     </p>
                                 </div>
+                                */}
+                                <img
+                                    src="/cit-logo.png"
+                                    alt="CIT logo"
+                                    className="w-75 object-contain object-center"
+                                />
                             </Link>
                         </div>
                         <div className="flex items-center gap-2">
