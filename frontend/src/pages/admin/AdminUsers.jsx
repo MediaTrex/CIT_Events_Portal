@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Search, UserCircle2 } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const INITIAL_PAGE_SIZE = 15;
 
@@ -350,7 +351,9 @@ function EmptyState({ title, description }) {
 }
 
 function AdminUsers() {
-    const [activeTab, setActiveTab] = useState("organizers");
+    let location = useLocation();
+    let state = location.state;
+    const [activeTab, setActiveTab] = useState(state?.type || "organizers");
     const [searchTerm, setSearchTerm] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
     const [visibleRows, setVisibleRows] = useState(INITIAL_PAGE_SIZE);
