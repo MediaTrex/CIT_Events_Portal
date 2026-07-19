@@ -1,0 +1,744 @@
+# openapi: 3.0.3
+openapi: 3.0.3
+
+info:
+  title: CIT Event Hub API
+  version: 1.0.0
+  description: >-
+    Comprehensive API documentation for the CIT Event Hub backend. Includes endpoints for authentication, user management, events, teams, registrations, notifications, payments, results, and announcements.
+servers:
+  - url: http://localhost:3000/api-docs
+    description: Local development server
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user (admin creates user)
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegister'
+            example:
+              email: user@example.com
+              password: secret123
+              role: student
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: 42
+                email: user@example.com
+                role: student
+                created_at: '2026-06-18T10:00:00Z'
+        '400':
+          description: Validation error
+  /auth/login:
+    post:
+      summary: Login and receive JWT token
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLogin'
+            example:
+              email: user@example.com
+              password: secret123
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '401':
+          description: Invalid credentials
+  /users:
+    get:
+      summary: List all users (admin only)
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Array of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              example:
+                - id: 1
+                  email: admin@example.com
+                  role: admin
+                - id: 2
+                  email: student@example.com
+                  role: student
+  /users/profile:
+    get:
+      summary: Get logged‑in user profile
+      tags:
+        - Users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /events:
+    get:
+      summary: Retrieve public list of events
+      tags:
+        - Events
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+    post:
+      summary: Create a new event (organizer or admin)
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventCreate'
+            example:
+              title: "Hackathon 2026"
+              slug: "hackathon-2026"
+              description: "Annual college hackathon"
+              organizer_id: 3
+              start_date: '2026-09-01T09:00:00Z'
+              end_date: '2026-09-02T18:00:00Z'
+              registration_deadline: '2026-08-20T23:59:59Z'
+              max_team_size: 4
+              is_paid: true
+              price_cents: 5000
+              status: draft
+      responses:
+        '201':
+          description: Event created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+  /events/{eventId}:
+    get:
+      summary: Get event details
+      tags:
+        - Events
+      parameters:
+        - in: path
+          name: eventId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Event object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+    patch:
+      summary: Update event (organizer/admin)
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: eventId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventUpdate'
+            example:
+              title: "Hackathon 2026 Updated"
+      responses:
+        '200':
+          description: Updated event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+    delete:
+      summary: Delete event
+      tags:
+        - Events
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: eventId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Event deleted
+  /teams:
+    post:
+      summary: Create a team (student, organizer, admin)
+      tags:
+        - Teams
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamCreate'
+            example:
+              event_id: 5
+              name: "Alpha Squad"
+      responses:
+        '201':
+          description: Team created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+  /teams/{teamId}:
+    get:
+      summary: Get team details
+      tags:
+        - Teams
+      parameters:
+        - in: path
+          name: teamId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Team object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+    put:
+      summary: Update team (captain only)
+      tags:
+        - Teams
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: teamId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamUpdate'
+            example:
+              name: "Beta Squad"
+      responses:
+        '200':
+          description: Updated team
+    delete:
+      summary: Delete team (captain only)
+      tags:
+        - Teams
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: teamId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Team deleted
+  /registrations:
+    post:
+      summary: Register for an event (individual or team)
+      tags:
+        - Registrations
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationCreate'
+            example:
+              event_id: 5
+              student_id: 12
+      responses:
+        '201':
+          description: Registration created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registration'
+  /payments:
+    post:
+      summary: Record payment for a registration
+      tags:
+        - Payments
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreate'
+            example:
+              registration_id: 23
+              amount_cents: 5000
+              currency: USD
+              provider: stripe
+              provider_transaction_id: 'txn_1ABC23'
+      responses:
+        '201':
+          description: Payment recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+  /notifications:
+    post:
+      summary: Create a notification (admin/system)
+      tags:
+        - Notifications
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationCreate'
+            example:
+              user_id: 12
+              type: announcement
+              title: "New Announcement"
+              body: "Check out the latest updates."
+      responses:
+        '201':
+          description: Notification created
+  /notifications/{id}/read:
+    put:
+      summary: Mark notification as read
+      tags:
+        - Notifications
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Notification marked as read
+  /announcements:
+    get:
+      summary: List announcements (public)
+      tags:
+        - Announcements
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: List of announcements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Announcement'
+    post:
+      summary: Create announcement (admin/organizer)
+      tags:
+        - Announcements
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnnouncementCreate'
+            example:
+              title: "Campus Event Tomorrow"
+              body: "Don't miss the guest lecture at 10 AM."
+      responses:
+        '201':
+          description: Announcement created
+  /announcements/{id}:
+    put:
+      summary: Update announcement
+      tags:
+        - Announcements
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnnouncementUpdate'
+            example:
+              title: "Updated Title"
+      responses:
+        '200':
+          description: Announcement updated
+    delete:
+      summary: Delete announcement
+      tags:
+        - Announcements
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Announcement deleted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        role:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    UserRegister:
+      type: object
+      required:
+        - email
+        - password
+        - role
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+        role:
+          type: string
+          enum: [student, organizer, admin]
+    UserLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+    Event:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+        organizer_id:
+          type: integer
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        registration_deadline:
+          type: string
+          format: date-time
+        max_team_size:
+          type: integer
+        is_paid:
+          type: boolean
+        price_cents:
+          type: integer
+        status:
+          type: string
+          enum: [draft, published, closed, cancelled]
+        created_at:
+          type: string
+          format: date-time
+    EventCreate:
+      allOf:
+        - $ref: '#/components/schemas/Event'
+        - type: object
+          required:
+            - title
+            - slug
+            - organizer_id
+            - start_date
+            - end_date
+            - registration_deadline
+    EventUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+    Team:
+      type: object
+      properties:
+        id:
+          type: integer
+        event_id:
+          type: integer
+        name:
+          type: string
+        captain_student_id:
+          type: integer
+    TeamCreate:
+      type: object
+      required:
+        - event_id
+        - name
+      properties:
+        event_id:
+          type: integer
+        name:
+          type: string
+        captain_student_id:
+          type: integer
+    TeamUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+    Registration:
+      type: object
+      properties:
+        id:
+          type: integer
+        event_id:
+          type: integer
+        student_id:
+          type: integer
+        team_id:
+          type: integer
+        status:
+          type: string
+    RegistrationCreate:
+      type: object
+      oneOf:
+        - required: [event_id, student_id]
+        - required: [event_id, team_id]
+      properties:
+        event_id:
+          type: integer
+        student_id:
+          type: integer
+        team_id:
+          type: integer
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+        registration_id:
+          type: integer
+        amount_cents:
+          type: integer
+        currency:
+          type: string
+        provider:
+          type: string
+        provider_transaction_id:
+          type: string
+        status:
+          type: string
+    PaymentCreate:
+      type: object
+      required:
+        - registration_id
+        - amount_cents
+        - currency
+        - provider
+        - provider_transaction_id
+      properties:
+        registration_id:
+          type: integer
+        amount_cents:
+          type: integer
+        currency:
+          type: string
+        provider:
+          type: string
+          enum: [stripe, paypal, razorpay, other]
+        provider_transaction_id:
+          type: string
+    NotificationCreate:
+      type: object
+      required:
+        - user_id
+        - type
+        - title
+      properties:
+        user_id:
+          type: integer
+        type:
+          type: string
+          enum: [team_invite, event_reminder, announcement, payment_success, result_published]
+        title:
+          type: string
+        body:
+          type: string
+        url:
+          type: string
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: integer
+        creator_user_id:
+          type: integer
+        title:
+          type: string
+        body:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AnnouncementCreate:
+      type: object
+      required:
+        - title
+        - body
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+    AnnouncementUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        body:
+          type: string
+    Result:
+      type: object
+      properties:
+        id:
+          type: integer
+        event_id:
+          type: integer
+        participant_id:
+          type: integer
+        team_id:
+          type: integer
+        rank:
+          type: integer
+        score:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+    ResultCreate:
+      type: object
+      required:
+        - event_id
+        - rank
+      properties:
+        event_id:
+          type: integer
+        participant_id:
+          type: integer
+        team_id:
+          type: integer
+        rank:
+          type: integer
+        score:
+          type: number
