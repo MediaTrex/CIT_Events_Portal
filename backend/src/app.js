@@ -1,4 +1,3 @@
-// src/app.js
 import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
@@ -27,8 +26,10 @@ import dashboardRoutes from '../routes/dashboardRoutes.js';
 import userRoutes from '../routes/userRoutes.js';
 import adminRoutes from '../routes/adminRoutes.js';
 import announcementRoutes from '../routes/announcementRoutes.js';
+import requestLogger from '../middleware/requestLogger.js';
 
 const app = express();
+app.set('trust proxy', true);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Global middlewares
@@ -37,6 +38,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
+app.use(requestLogger);
+
+// Home Endpoint
+app.get('/', async (req, res) => {
+  res.status(200).json({ status:'OK', message:'Welcome To CIT-Events API Endpoint'
+  })
+})
 
 // Health check endpoint (placed before 404 handler to ensure it works)
 app.get('/health', async (req, res) => {

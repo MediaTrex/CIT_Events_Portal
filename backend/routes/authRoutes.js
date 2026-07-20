@@ -1,4 +1,3 @@
-// backend/routes/authRoutes.js
 // Routes for user registration and authentication flow
 
 import express from 'express';

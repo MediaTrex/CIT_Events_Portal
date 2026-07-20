@@ -1,4 +1,3 @@
-// services/authService.js
 // Core business logic for authentication (register, login, password reset, email verification)
 
 import bcrypt from 'bcrypt';
@@ -13,7 +12,7 @@ const JWT_EMAIL_SECRET = process.env.JWT_EMAIL_SECRET || 'email_secret'; // for 
 const ACCESS_EXPIRES_IN = '15m';
 const REFRESH_EXPIRES_IN = '7d';
 
-// Nodemailer transporter (basic example – uses env vars)
+// Nodemailer transporter 
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST,
   port: Number(process.env.MAIL_PORT) || 587,
@@ -46,7 +45,7 @@ export async function registerUser({ email, password, firstName, lastName, role 
     // Determine initial status based on role
     const initialStatus = role === 'organizer' ? 'pending' : 'active';
     const [result] = await conn.execute(
-      `INSERT INTO users (email, password_hash, role, status, created_at, updated_at) VALUES (?,?,?,?,?,?)`,
+      `INSERT INTO users (email, password, role, status, created_at, updated_at) VALUES (?,?,?,?,?,?)`,
       [email, hashed, role, initialStatus, new Date(), new Date()]
     );
     const userId = result.insertId;
@@ -131,7 +130,7 @@ export async function resetPassword(token, newPassword) {
   const hashed = await bcrypt.hash(newPassword, SALT_ROUNDS);
   const conn = await getConnection();
   try {
-    await conn.execute(`UPDATE users SET password_hash = ?, updated_at = ? WHERE email = ?`, [hashed, new Date(), payload.email]);
+    await conn.execute(`UPDATE users SET password = ?, updated_at = ? WHERE email = ?`, [hashed, new Date(), payload.email]);
   } finally {
     conn.release();
   }
@@ -149,8 +148,8 @@ export async function verifyEmail(token) {
   
   const conn = await getConnection();
   try {
-    // Update users table status or set verified if flag existed. Since we do not have specific verified column in current schema, we can keep role=role update.
-    await conn.execute(`UPDATE users SET updated_at = NOW() WHERE email = ?`, [payload.email]);
+    await conn.execute(`UPDATE users SET is_verified = TRUE WHERE email = ?`, [payload.email]);
+    return res.status(200).json({ message: 'Email verified successfully' });
   } finally {
     conn.release();
   }

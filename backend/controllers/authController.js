@@ -1,4 +1,3 @@
-// controllers/authController.js
 // Handles incoming HTTP requests for authentication related actions
 
 import { registerUser, loginUser, initiatePasswordReset, resetPassword as resetPasswordService, verifyEmail } from '../services/authService.js';

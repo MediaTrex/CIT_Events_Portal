@@ -1,5 +1,4 @@
 -- CIT Event Hub Backend Schema (MySQL)
--- Cleaned and optimized for MySQL database
 
 CREATE DATABASE IF NOT EXISTS events;
 
@@ -9,9 +8,10 @@ USE events;
 CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
+    is_verified BOOLEAN NOT NULL DEFAULT FALSE,
+    password VARCHAR(255) NOT NULL,
     role ENUM('student', 'organizer', 'admin') NOT NULL,
-    status VARCHAR(20) NOT NULL DEFAULT 'active',
+    status VARCHAR(20) NOT NULL DEFAULT 'active', 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
