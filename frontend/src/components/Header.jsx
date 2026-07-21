@@ -89,7 +89,7 @@ export default function Header() {
             }}
         >
             <div
-                style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}
+                style={{ maxWidth: 1200, margin: "0 auto", padding: "8px 24px" }}
             >
                 <div
                     style={{
