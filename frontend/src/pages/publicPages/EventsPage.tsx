@@ -328,11 +328,13 @@ function FilterPanel({
     setFilters,
     totalResults,
     className,
+    mobileFilter = false,
 }: {
     filters: Filters;
     setFilters: React.Dispatch<React.SetStateAction<Filters>>;
     totalResults: number;
     className?: String;
+    mobileFilter?: boolean;
 }) {
     const set = (key: keyof Filters, val: string) =>
         setFilters((f) => ({ ...f, [key]: val }));
@@ -489,65 +491,67 @@ function FilterPanel({
             </p>
 
             {/* Search */}
-            <div style={sectionStyle}>
-                <span style={labelStyle}>Search</span>
-                <div style={{ position: "relative" }}>
-                    <Search
-                        size={15}
-                        color="#65676B"
-                        style={{
-                            position: "absolute",
-                            left: 12,
-                            top: "50%",
-                            transform: "translateY(-50%)",
-                        }}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Search events..."
-                        value={filters.search}
-                        onChange={(e) => set("search", e.target.value)}
-                        style={{
-                            width: "100%",
-                            padding: "10px 12px 10px 36px",
-                            borderRadius: 9,
-                            border: "1.5px solid #DADDE1",
-                            fontFamily: "'Inter', sans-serif",
-                            fontSize: 13,
-                            color: "#1C1E21",
-                            outline: "none",
-                            background: "#F7F8FA",
-                            boxSizing: "border-box",
-                            transition: "border-color 0.15s",
-                        }}
-                        onFocus={(e) => {
-                            e.currentTarget.style.borderColor = "#1877F2";
-                            e.currentTarget.style.background = "#fff";
-                        }}
-                        onBlur={(e) => {
-                            e.currentTarget.style.borderColor = "#DADDE1";
-                            e.currentTarget.style.background = "#F7F8FA";
-                        }}
-                    />
-                    {filters.search && (
-                        <button
-                            onClick={() => set("search", "")}
+            {!mobileFilter && (
+                <div style={sectionStyle}>
+                    <span style={labelStyle}>Search</span>
+                    <div style={{ position: "relative" }}>
+                        <Search
+                            size={15}
+                            color="#65676B"
                             style={{
                                 position: "absolute",
-                                right: 10,
+                                left: 12,
                                 top: "50%",
                                 transform: "translateY(-50%)",
-                                background: "none",
-                                border: "none",
-                                cursor: "pointer",
-                                padding: 2,
                             }}
-                        >
-                            <X size={13} color="#65676B" />
-                        </button>
-                    )}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search events..."
+                            value={filters.search}
+                            onChange={(e) => set("search", e.target.value)}
+                            style={{
+                                width: "100%",
+                                padding: "10px 12px 10px 36px",
+                                borderRadius: 9,
+                                border: "1.5px solid #DADDE1",
+                                fontFamily: "'Inter', sans-serif",
+                                fontSize: 13,
+                                color: "#1C1E21",
+                                outline: "none",
+                                background: "#F7F8FA",
+                                boxSizing: "border-box",
+                                transition: "border-color 0.15s",
+                            }}
+                            onFocus={(e) => {
+                                e.currentTarget.style.borderColor = "#1877F2";
+                                e.currentTarget.style.background = "#fff";
+                            }}
+                            onBlur={(e) => {
+                                e.currentTarget.style.borderColor = "#DADDE1";
+                                e.currentTarget.style.background = "#F7F8FA";
+                            }}
+                        />
+                        {filters.search && (
+                            <button
+                                onClick={() => set("search", "")}
+                                style={{
+                                    position: "absolute",
+                                    right: 10,
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    background: "none",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    padding: 2,
+                                }}
+                            >
+                                <X size={13} color="#65676B" />
+                            </button>
+                        )}
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Category */}
             <div style={sectionStyle}>
@@ -922,64 +926,117 @@ export default function EventsPage() {
                 {/* Negative margin card pull-up */}
                 <div className="mx-auto -mt-6 max-w-300 px-6 pb-15">
                     {/* Toolbar */}
-                    <div className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-5 py-3.5 shadow-(--cit-shadow-sm)">
-                        <div className="flex items-center gap-2">
-                            <Tag size={15} color="var(--cit-primary)" />
-                            <span className="text-[15px] font-bold text-(--cit-text)">
-                                {filtered.length} Events
-                            </span>
-                            {filters.category !== "All" && (
-                                <span className="flex items-center gap-1 rounded-(--cit-radius-sm) bg-(--cit-primary-soft) px-2.5 py-0.5 text-xs font-semibold text-(--cit-primary)">
-                                    {filters.category}
-                                    <X
-                                        size={12}
-                                        className="cursor-pointer"
-                                        onClick={() =>
-                                            handleSetFilters((f) => ({
-                                                ...f,
-                                                category: "All",
-                                            }))
-                                        }
-                                    />
-                                </span>
-                            )}
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                            {/* Mobile filter toggle */}
-                            <button
-                                onClick={() =>
-                                    setMobilePanelOpen(!mobilePanelOpen)
-                                }
-                                className="mobile-filter-btn hidden items-center gap-1.5 rounded-(--cit-radius-sm) border border-(--cit-border) bg-(--cit-surface) px-3.5 py-2 text-[13px] font-semibold text-(--cit-text)"
-                            >
-                                <Filter size={14} /> Filters
-                            </button>
-
-                            {/* Sort */}
+                    <div className="mb-5 flex flex-col gap-3 rounded-(--cit-radius-md) border border-(--cit-border) bg-(--cit-surface) px-5 py-3.5 shadow-(--cit-shadow-sm)">
+                        <div className="flex justify-between">
                             <div className="flex items-center gap-2">
-                                <span className="text-[13px] text-(--cit-text-muted)">
-                                    Sort by:
+                                <Tag size={15} color="var(--cit-primary)" />
+                                <span className="text-[15px] font-bold text-(--cit-text)">
+                                    {filtered.length} Events
                                 </span>
-                                <div className="relative">
-                                    <select
-                                        value={sort}
-                                        onChange={(e) =>
-                                            setSort(e.target.value)
-                                        }
-                                        className="cursor-pointer appearance-none rounded-(--cit-radius-sm) border border-(--cit-border) bg-(--cit-surface) py-2 pl-3 pr-8 text-[13px] font-semibold text-(--cit-text) outline-none"
-                                    >
-                                        <option>Featured</option>
-                                        <option>Participants</option>
-                                        <option>Prize</option>
-                                    </select>
-                                    <ChevronDown
-                                        size={14}
-                                        color="var(--cit-text-muted)"
-                                        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
-                                    />
+                                {filters.category !== "All" && (
+                                    <span className="flex items-center gap-1 rounded-(--cit-radius-sm) bg-(--cit-primary-soft) px-2.5 py-0.5 text-xs font-semibold text-(--cit-primary)">
+                                        {filters.category}
+                                        <X
+                                            size={12}
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                                handleSetFilters((f) => ({
+                                                    ...f,
+                                                    category: "All",
+                                                }))
+                                            }
+                                        />
+                                    </span>
+                                )}
+                            </div>
+
+                            <div className="flex items-center gap-3">
+                                {/* Mobile filter toggle */}
+                                <button
+                                    onClick={() =>
+                                        setMobilePanelOpen(!mobilePanelOpen)
+                                    }
+                                    className="mobile-filter-btn hidden items-center gap-1.5 rounded-(--cit-radius-sm) border border-(--cit-border) bg-(--cit-surface) px-3.5 py-2 text-[13px] font-semibold text-(--cit-text)"
+                                >
+                                    <Filter size={14} /> Filters
+                                </button>
+
+                                {/* Sort */}
+                                <div className="flex items-center gap-2">
+                                    <span className="text-[13px] text-(--cit-text-muted)">
+                                        Sort by:
+                                    </span>
+                                    <div className="relative">
+                                        <select
+                                            value={sort}
+                                            onChange={(e) =>
+                                                setSort(e.target.value)
+                                            }
+                                            className="cursor-pointer appearance-none rounded-(--cit-radius-sm) border border-(--cit-border) bg-(--cit-surface) py-2 pl-3 pr-8 text-[13px] font-semibold text-(--cit-text) outline-none"
+                                        >
+                                            <option>Featured</option>
+                                            <option>Participants</option>
+                                            <option>Prize</option>
+                                        </select>
+                                        <ChevronDown
+                                            size={14}
+                                            color="var(--cit-text-muted)"
+                                            className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2"
+                                        />
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <div
+                            style={{ position: "relative" }}
+                            className="mobile-search-input hidden"
+                        >
+                            <Search
+                                size={15}
+                                color="#65676B"
+                                style={{
+                                    position: "absolute",
+                                    left: 12,
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                }}
+                            />
+                            <input
+                                type="text"
+                                placeholder="Search events..."
+                                value={filters.search}
+                                onChange={(e) =>
+                                    setSearchFilters((f) => ({
+                                        ...f,
+                                        search: e.target.value,
+                                    }))
+                                } //setFilters((f) => ({ ...f, search: e.target.value)}
+                                style={{
+                                    width: "100%",
+                                    padding: "10px 12px 10px 36px",
+                                    borderRadius: 9,
+                                    border: "1.5px solid #DADDE1",
+                                    fontFamily: "'Inter', sans-serif",
+                                    fontSize: 13,
+                                    color: "#1C1E21",
+                                    outline: "none",
+                                    background: "#F7F8FA",
+                                    boxSizing: "border-box",
+                                    transition: "border-color 0.15s",
+                                }}
+                                onFocus={(e) => {
+                                    e.currentTarget.style.borderColor =
+                                        "#1877F2";
+                                    e.currentTarget.style.background = "#fff";
+                                }}
+                                onBlur={(e) => {
+                                    e.currentTarget.style.borderColor =
+                                        "#DADDE1";
+                                    e.currentTarget.style.background =
+                                        "#F7F8FA";
+                                }}
+                            />
                         </div>
                     </div>
 
@@ -991,6 +1048,7 @@ export default function EventsPage() {
                                 setFilters={handleSetFilters}
                                 totalResults={filtered.length}
                                 className="mobileFilter"
+                                mobileFilter
                             />
                         </div>
                     )}
@@ -1065,8 +1123,9 @@ export default function EventsPage() {
           .events-layout { grid-template-columns: 1fr !important; }
           .sidebar-col { display: none !important; }
           .mobile-filter-btn { display: flex !important; }
+          .mobile-search-input{ display: block; }
           }
-          @media (min-width: 900px){
+        @media (min-width: 900px){
             .mobileFilter { display: none !important; }
         }
         @media (max-width: 540px) {
