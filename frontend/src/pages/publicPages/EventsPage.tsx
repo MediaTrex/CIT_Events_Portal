@@ -552,7 +552,7 @@ function FilterPanel({
                     </div>
                 </div>
             )}
-
+    
             {/* Category */}
             <div style={sectionStyle}>
                 <span style={labelStyle}>Category</span>
