@@ -235,7 +235,7 @@ export default function Login() {
                                         to="/forgot-password"
                                         className="font-semibold text-(--cit-primary) transition-colors hover:text-(--cit-primary-hover)"
                                     >
-                                        Forgot password?
+                                        Forgot password ?
                                     </Link>
                                 </div>
 
