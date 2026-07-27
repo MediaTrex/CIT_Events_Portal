@@ -24,6 +24,6 @@ const Home = () => {
             <Footer />
         </Layout>
     );
-};
+}; 
 
 export default Home;
