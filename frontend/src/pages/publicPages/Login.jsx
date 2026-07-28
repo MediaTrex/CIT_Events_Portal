@@ -53,7 +53,7 @@ export default function Login() {
                 email: formData.email,
                 name: formData.email.split("@")[0],
                 role: "student",
-            });
+            }); 
 
             toast.success("Login successful!");
             reset({ email: "", password: "", rememberMe: false });
