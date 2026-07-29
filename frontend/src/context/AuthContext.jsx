@@ -7,7 +7,7 @@ export function AuthProvider({ children }) {
         id: 23,
         email: "youremail@example.edu.in",
         name: "John Kumar rathu Doe",
-        role: "student",
+        role: "organizer",
         profileSetupCompleted: false,
         isApproved: false,
     });
