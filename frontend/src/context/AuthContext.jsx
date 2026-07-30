@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
         role: "organizer",
         profileSetupCompleted: false,
         isApproved: false,
-    });
+    }); 
     const isLoggedIn = Boolean(user);
 
     const value = useMemo(
